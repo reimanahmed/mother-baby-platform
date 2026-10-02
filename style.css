@@ -1,0 +1,22 @@
+/* تصميم عام للصفحة */
+body {
+    font-family: sans-serif;
+    background-color: #f9f4f8;
+    color: #333333;
+    text-align: center;
+    padding: 50px 20px;
+    margin: 0;
+}
+
+/* تصميم العنوان الرئيسي */
+h1 {
+    color: #d81b60;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+/* تصميم النص */
+p {
+    color: #555555;
+    font-size: 18px;
+}
