@@ -301,4 +301,64 @@ body {
 .read-more:hover {
     text-decoration: underline;
 }
+/* قسم الحاسبات الذكية */
+.calculators-section {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.calculators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.calc-card {
+    background-color: #ffffff;
+    border: 2px solid #fff0f5;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(216, 27, 96, 0.05);
+    text-align: right;
+}
+
+.calc-card h3 {
+    color: #d81b60;
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.calc-card p {
+    color: #666666;
+    font-size: 14px;
+}
+
+.calc-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.calc-input:focus {
+    border-color: #d81b60;
+}
+
+.calc-result {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #fff0f5;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    color: #333333;
+}
+
 
