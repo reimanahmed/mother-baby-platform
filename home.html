@@ -192,5 +192,31 @@
         var whatsappUrl = "https://wa.me/" + myPhoneNumber + "?text=" + message;
         window.open(whatsappUrl, '_blank');
     }
-</script>
+</script> 
+       <!-- قسم الحاسبات الذكية -->
+    <section id="calculators" class="calculators-section">
+        <h2>الحاسبات الذكية للأم والطفل 🧮</h2>
+        <p class="section-desc">أدوات دقيقة لمتابعة رحلة حملكِ ونمو طفلكِ خطوة بخطوة</p>
+
+        <div class="calculators-grid">
+            <!-- حاسبة الحمل -->
+            <div class="calc-card">
+                <h3>🤰 حاسبة موعد الولادة والحمل</h3>
+                <p>أدخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+                <input type="date" id="lastPeriodDate" class="calc-input">
+                <button type="button" class="btn-primary" onclick="calculatePregnancy()">احسبي موعد الولادة</button>
+                <div id="pregnancyResult" class="calc-result"></div>
+            </div>
+
+            <!-- حاسبة عمر الطفل -->
+            <div class="calc-card">
+                <h3>👶 حاسبة عمر الطفل الدقيقة</h3>
+                <p>أدخلي تاريخ ميلاد طفلكِ:</p>
+                <input type="date" id="babyBirthDate" class="calc-input">
+                <button type="button" class="btn-primary" onclick="calculateBabyAge()">احسبي عمر طفلكِ</button>
+                <div id="babyAgeResult" class="calc-result"></div>
+            </div>
+        </div>
+    </section>
+ 
 
