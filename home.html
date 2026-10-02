@@ -141,9 +141,30 @@
 
 <script>
     function submitItem() {
-        alert("تم نشر غرضكِ بنجاح على منصة Kinder! شكرًا لمشاركتكِ 🌸");
+        // جلب البيانات من الاستمارة
+        var title = document.getElementById('title').value;
+        var price = document.getElementById('price').value;
+        var condition = document.getElementById('condition').options[document.getElementById('condition').selectedIndex].text;
+        var phone = document.getElementById('phone').value;
+
+        // التأكد من ملء الحقول
+        if (!title || !price || !phone) {
+            alert("يرجى ملء جميع الحقول لطفاً 🌸");
+            return;
+        }
+
+        // كتابة رقم الواتساب الخاص بكِ (غيري الرقم أدناه لرقمكِ مع الرمز الدولي مثلاً 9647XXXXXXXXX)
+        var myPhoneNumber = "9647000000000"; 
+
+        // تجهيز نص الرسالة
+        var message = "مرحباً منصة Kinder 🌸%0Aأود عرض غرض للبيع:%0A- **المنتج:** " + encodeURIComponent(title) + 
+                      "%0A- **السعر:** " + encodeURIComponent(price) + 
+                      "%0A- **الحالة:** " + encodeURIComponent(condition) + 
+                      "%0A- **رقم التواصل:** " + encodeURIComponent(phone);
+
+        // فتح الواتساب مباشرة
+        var whatsappUrl = "https://wa.me/" + myPhoneNumber + "?text=" + message;
+        window.open(whatsappUrl, '_blank');
     }
 </script>
 
-</body>
-</html>
