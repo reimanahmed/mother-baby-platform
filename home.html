@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder - منصة الأم والطفل المتكاملة</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- شريط التنقل (Navbar) -->
+    <nav class="navbar">
+        <div class="logo">Kinder 🌸</div>
+        <div class="lang-switcher">
+            <button onclick="setLanguage('ar')" class="lang-btn active">AR</button>
+            <button onclick="setLanguage('ku')" class="lang-btn">KU</button>
+            <button onclick="setLanguage('en')" class="lang-btn">EN</button>
+        </div>
+    </nav>
+
+    <!-- الواجهة الترحيبية -->
+    <main class="hero-section">
+        <h1 data-key="hero_title">مرحباً بكِ في منصة Kinder</h1>
+        <p data-key="hero_desc">مساحتكِ الشاملة لرعاية الأم والطفل، الحاسبات، اللقاحات، والسوق المستعمل...</p>
+        <a href="#tools-section" class="btn-primary" data-key="hero_btn">استكشفي الأدوات الذكية</a>
+    </main>
+
+    <!-- القسم الرئيسي للأدوات والرعاية الشاملة -->
+    <section id="tools-section" class="main-care-section">
+        <div class="section-header">
+            <h2 data-key="tools_title">أدوات ورعاية الأم والطفل 🌿</h2>
+            <p data-key="tools_desc">كل ما تحتاجينه في رحلة الأمومة في مكان واحد</p>
+        </div>
+
+        <!-- أزرار التبويب الرئيسية -->
+        <div class="main-tabs">
+            <button type="button" class="main-tab-btn active" onclick="openMainTab('calc-tab')" data-key="tab_calc">🧮 الحاسبات</button>
+            <button type="button" class="main-tab-btn" onclick="openMainTab('vaccine-tab')" data-key="tab_vaccine">💉 اللقاحات</button>
+            <button type="button" class="main-tab-btn" onclick="openMainTab('hospital-tab')" data-key="tab_hospital">🧳 حقيبة الولادة</button>
+            <button type="button" class="main-tab-btn" onclick="openMainTab('sleep-tab')" data-key="tab_sleep">🌙 نوم الطفل</button>
+            <button type="button" class="main-tab-btn" onclick="openMainTab('emergency-tab')" data-key="tab_emergency">🚨 الإسعافات</button>
+        </div>
+
+        <!-- 1. الحاسبات الذكية -->
+        <div id="calc-tab" class="care-tab-content active">
+            <div class="calculators-grid">
+                <div class="calc-card">
+                    <h3 data-key="calc_preg_title">🤰 حاسبة موعد الولادة</h3>
+                    <p data-key="calc_preg_desc">أدخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+                    <input type="date" id="lastPeriodDate" class="calc-input">
+                    <button type="button" class="btn-primary" onclick="calculatePregnancy()" data-key="btn_calc_preg">احسبي موعد الولادة</button>
+                    <div id="pregnancyResult" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3 data-key="calc_baby_title">👶 حاسبة عمر الطفل الدقيقة</h3>
+                    <p data-key="calc_baby_desc">أدخلي تاريخ ميلاد طفلكِ:</p>
+                    <input type="date" id="babyBirthDate" class="calc-input">
+                    <button type="button" class="btn-primary" onclick="calculateBabyAge()" data-key="btn_calc_baby">احسبي عمر طفلكِ</button>
+                    <div id="babyAgeResult" class="calc-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. جدول اللقاحات -->
+        <div id="vaccine-tab" class="care-tab-content">
+            <div class="select-box">
+                <label for="vaccineAge" data-key="label_vaccine">اختاري عمر الطفل لتفاصيل اللقاحات:</label>
+                <select id="vaccineAge" onchange="showVaccineInfo()">
+                    <option value="birth">عند الولادة (حديث الولادة)</option>
+                    <option value="2m">عمر شهرين</option>
+                    <option value="4m">عمر 4 أشهر</option>
+                    <option value="6m">عمر 6 أشهر</option>
+                    <option value="12m">عمر سنة (12 شهر)</option>
+                </select>
+            </div>
+            <div id="vaccineResult" class="dev-card">
+                <h3>📌 لقاحات حديث الولادة</h3>
+                <p>• لقاح البي سي جي (BCG) ضد السل.</p>
+                <p>• لقاح التهاب الكبد الفيروسي ب (Hep B) الجرعة الأولى.</p>
+                <p>• قطرات شلل الأطفال الفموية (OPV).</p>
+            </div>
+        </div>
+
+        <!-- 3. حقيبة الولادة -->
+        <div id="hospital-tab" class="care-tab-content">
+            <div class="checklist-card">
+                <h3 data-key="hospital_title">🧳 قائمة مستلزمات مستشفى الولادة</h3>
+                <p data-key="hospital_desc">حددي الأغراض التي قمتِ بتجهيزها في حقيبتكِ:</p>
+                <div class="checklist-items">
+                    <label><input type="checkbox"> ملابس قطنية مريحة للأم (2-3 طقم)</label><br>
+                    <label><input type="checkbox"> حفاضات أطفال ومبللة حديثي الولادة</label><br>
+                    <label><input type="checkbox"> ملابس وأفارولات للطفل (3 أطقم)</label><br>
+                    <label><input type="checkbox"> بطانية ولفافة ناعمة للطفل</label><br>
+                    <label><input type="checkbox"> فوط صحية ومستلزمات العناية الشحصية</label><br>
+                    <label><input type="checkbox"> المستندات الطبية والهوية الشخصية</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. جدول نوم الطفل -->
+        <div id="sleep-tab" class="care-tab-content">
+            <div class="select-box">
+                <label for="sleepAge" data-key="label_sleep">اختاري عمر الطفل لمعرفة جدول النوم:</label>
+                <select id="sleepAge" onchange="showSleepInfo()">
+                    <option value="0-3">0 إلى 3 أشهر</option>
+                    <option value="4-11">4 إلى 11 شهر</option>
+                    <option value="1-2">سنة إلى سنتين</option>
+                </select>
+            </div>
+            <div id="sleepResult" class="dev-card">
+                <h3>🌙 النوم من 0 إلى 3 أشهر</h3>
+                <p><b>مجموع النوم المطلوب:</b> 14 - 17 ساعة يومياً.</p>
+                <p><b>الغفوات النهارية:</b> 3 إلى 5 غفوات قصيرة.</p>
+                <p><b>نصيحة:</b> ينام الرضيع لفترات قصيرة تتخللها الرضاعة المستمرة.</p>
+            </div>
+        </div>
+
+        <!-- 5. الإسعافات الأولية والطوارئ -->
+        <div id="emergency-tab" class="care-tab-content">
+            <div class="emergency-grid">
+                <div class="emergency-card">
+                    <h3>🌡️ ارتفاع الحرارة (الحمى)</h3>
+                    <p>• انزعي الملابس الثقيلة واستخدمي كماضات ماء فاتر على الأطراف والعنق.</p>
+                    <p>• تجنبي استخدام الماء البارد جداً أو الثلج.</p>
+                    <p>• أعطي خافض حرارة (باراسيتامول) حسب الجرعة الموصى بها طفلياً.</p>
+                </div>
+                <div class="emergency-card">
+                    <h3>🍼 المغص والغازات لدى الرضيع</h3>
+                    <p>• تدليك بطن الطفل بحركات دائرية خفيفة مع اتجاه عقارب الساعة.</p>
+                    <p>• ثني ركبتي الطفل ببطء نحو بطنه لإخراج الغازات.</p>
+                    <p>• التأكد من تجشؤ الطفل جيداً بعد كل رضعة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم مجتمع الأمهات والأسئلة -->
+    <section class="community-section">
+        <div class="section-header">
+            <h2 data-key="comm_title">مجتمع واستشارات الأمهات 💬</h2>
+            <p data-key="comm_desc">اطرحي استفساركِ وشاركي خبرتكِ مع أمهات آخريات</p>
+        </div>
+
+        <div class="community-box">
+            <textarea id="questionInput" placeholder="كتبي سؤالكِ هنا عزيزتي الأم..."></textarea>
+            <button class="btn-primary" onclick="postQuestion()" data-key="btn_post_q">نشر السؤال</button>
+            
+            <div id="questionsContainer" class="questions-list">
+                <div class="question-card">
+                    <strong>أم يوسف:</strong>
+                    <p>شنو أفضل طريقة لتهدئة الطفل أثناء ظهور الأسنان؟</p>
+                    <span class="q-reply">💬 3 إجابات</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم سوق المستعمل -->
+    <section id="market" class="market-section">
+        <div class="section-header">
+            <h2 data-key="market_title">سوق Kinder للمستلزمات 🛍️</h2>
+            <p data-key="market_desc">أغراض أطفال مستعملة بحالة ممتازة بأسعار مناسبة</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-badge">مستعمل - ممتاز</div>
+                <img src="https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?w=400&q=80" alt="عربانة">
+                <div class="product-info">
+                    <h3 data-key="p1_title">عربانة أطفال خفيفة للطي</h3>
+                    <p class="price">25,000 د.ع</p>
+                    <button class="btn-secondary" data-key="btn_contact">تواصل مع البائعة</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-badge">مستعمل - كالجديد</div>
+                <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80" alt="سرير">
+                <div class="product-info">
+                    <h3 data-key="p2_title">سرير خشبي للأطفال مع ملحقاته</h3>
+                    <p class="price">45,000 د.ع</p>
+                    <button class="btn-secondary" data-key="btn_contact">تواصل مع البائعة</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم إضافة غرض للبيع -->
+    <section id="add-item" class="form-section">
+        <div class="form-container">
+            <h2 data-key="form_title">أضيفي غرضكِ للبيع 📲</h2>
+            <p data-key="form_desc">شاركي مستلزمات طفلكِ النظيفة مع أمهات آخريات بسهولة</p>
+
+            <form>
+                <div class="form-group">
+                    <label for="title" data-key="label_title">اسم المنتج:</label>
+                    <input type="text" id="title" placeholder="مثال: عربانة أطفال">
+                </div>
+
+                <div class="form-group">
+                    <label for="price" data-key="label_price">السعر (بالدينار):</label>
+                    <input type="text" id="price" placeholder="مثال: 20,000">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" data-key="label_phone">رقم الواتساب للتواصل:</label>
+                    <input type="tel" id="phone" placeholder="07xxxxxxxxx">
+                </div>
+
+                <button type="button" class="btn-submit" onclick="submitItem()" data-key="btn_submit">نشر الغرض عبر الواتساب</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Kinder 🌸</h3>
+            <p data-key="footer_desc">مجتمعكِ الآمن لرعاية الأم والطفل وتبادل المستلزمات بكل حب ورعاية.</p>
+            <p class="copyright">جميع الحقوق محفوظة © 2026 Kinder</p>
+        </div>
+    </footer>
+
+    <!-- سكريبت الوظائف والترجمة -->
+    <script>
+        const translations = {
+            ar: {
+                hero_title: "مرحباً بكِ في منصة Kinder", hero_desc: "مساحتكِ الشاملة لرعاية الأم والطفل، الحاسبات، اللقاحات، والسوق المستعمل...", hero_btn: "استكشفي الأدوات الذكية",
+                tools_title: "أدوات ورعاية الأم والطفل 🌿", tools_desc: "كل ما تحتاجينه في رحلة الأمومة في مكان واحد",
+                tab_calc: "🧮 الحاسبات", tab_vaccine: "💉 اللقاحات", tab_hospital: "🧳 حقيبة الولادة", tab_sleep: "🌙 نوم الطفل", tab_emergency: "🚨 الإسعافات",
+                calc_preg_title: "🤰 حاسبة موعد الولادة", calc_preg_desc: "أدخلي تاريخ أول يوم من آخر دورة شهرية:", btn_calc_preg: "احسبي موعد الولادة",
+                calc_baby_title: "👶 حاسبة عمر الطفل الدقيقة", calc_baby_desc: "أدخلي تاريخ ميلاد طفلكِ:", btn_calc_baby: "احسبي عمر طفلكِ",
+                label_vaccine: "اختاري عمر الطفل لتفاصيل اللقاحات:", hospital_title: "🧳 قائمة مستلزمات مستشفى الولادة", hospital_desc: "حددي الأغراض التي قمتِ بتجهيزها في حقيبتكِ:",
+                label_sleep: "اختاري عمر الطفل لمعرفة جدول النوم:", comm_title: "مجتمع واستشارات الأمهات 💬", comm_desc: "اطرحي استفساركِ وشاركي خبرتكِ مع أمهات آخريات",
+                btn_post_q: "نشر السؤال", market_title: "سوق Kinder للمستلزمات 🛍️", market_desc: "أغراض أطفال مستعملة بحالة ممتازة بأسعار مناسبة",
+                p1_title: "عربانة أطفال خفيفة للطي", p2_title: "سرير خشبي للأطفال مع ملحقاته", btn_contact: "تواصل مع البائعة",
+                form_title: "أضيفي غرضكِ للبيع 📲", form_desc: "شاركي مستلزمات طفلكِ النظيفة مع أمهات آخريات بسهولة",
+                label_title: "اسم المنتج:", label_price: "السعر (بالدينار):", label_phone: "رقم الواتساب للتواصل:", btn_submit: "نشر الغرض عبر الواتساب",
+                footer_desc: "مجتمعكِ الآمن لرعاية الأم والطفل وتبادل المستلزمات بكل حب ورعاية."
+            },
+            ku: {
+                hero_title: "بەخێربێن بۆ سەکۆی Kinder", hero_desc: "شوێنی گشتگیری تۆ بۆ چاودێری دایک و منداڵ، ژمێرەرەکان، کوتان، و بازاڕی بەکارهاتوو...", hero_btn: "ئامرازە ژیرەکان ببینە",
+                tools_title: "ئامراز و چاودێری دایک و منداڵ 🌿", tools_desc: "هەموو ئەوەی پێویستتە لە گەشتی دایکایەتیدا لە یەک شوێن",
+                tab_calc: "🧮 ژمێرەرەکان", tab_vaccine: "💉 کوتانەکان", tab_hospital: "🧳 جانتای نەخۆشخانە", tab_sleep: "🌙 خەوی منداڵ", tab_emergency: "🚨 فریاگوزاری",
+                calc_preg_title: "🤰 ژمێرەری بەرواري لەدایکبوون", calc_preg_desc: "بەرواری یەکەم ڕۆژی کۆتا سوڕی مانگانە بنووسە:", btn_calc_preg: "بەرواری لەدایکبوون بژمێرە",
+                calc_baby_title: "👶 ژمێرەری تەمەنی منداڵ", calc_baby_desc: "بەرواری لەدایکبوونی منداڵەکەت بنووسە:", btn_calc_baby: "تەمەنی منداڵەکەت بژمێرە",
+                label_vaccine: "تەمەنی منداڵ هەڵبژێرە بۆ زانیاری کوتان:", hospital_title: "🧳 لیستی پێداویستییەکانی نەخۆشخانەی منداڵبوون", hospital_desc: "ئەو شتانە دیاری بکە کە ئامادەت کردوون:",
+                label_sleep: "تەمەنی منداڵ هەڵبژێرە بۆ خشتی خەو:", comm_title: "کۆمەڵگە و ڕاوێژی دایکان 💬", comm_desc: "پسیارەکەت بپرسە و ئەزموونت لەگەڵ دایکانی تر ببهەشە",
+                btn_post_q: "بڵاوکردنەوەی پرسیار", market_title: "بازاڕی Kinder بۆ پێداویستییەکان 🛍️", market_desc: "کەلوپەلی بەکارهاتووی منداڵان بە کوالێتی بەرز و نرخی گونجاو",
+                p1_title: "عەرەبانەی منداڵان", p2_title: "بێشکەی دار بۆ منداڵان", btn_contact: "پەیوەندی بە فروشیاڕ بکە",
+                form_title: "کەلوپەلەکەت بۆ فروش بنووسە 📲", form_desc: "پێداویستییە پاکەکانی منداڵەکەت ببهەشە لەگەڵ دایکانی تردا",
+                label_title: "ناوی بەرهەم:", label_price: "نرخ (بە دینار):", label_phone: "ژمارەی واتسئاپ:", btn_submit: "بڵاوکردنەوە لە ڕێگەی واتسئاپ",
+                footer_desc: "کۆمەڵگەی ئارامی تۆ بۆ چاودێری دایک و منداڵ."
+            },
+            en: {
+                hero_title: "Welcome to Kinder Platform", hero_desc: "Your all-in-one space for mother & child care, calculators, vaccines, and marketplace...", hero_btn: "Explore Smart Tools",
+                tools_title: "Mother & Child Tools 🌿", tools_desc: "Everything you need in your motherhood journey in one place",
+                tab_calc: "🧮 Calculators", tab_vaccine: "💉 Vaccines", tab_hospital: "🧳 Hospital Bag", tab_sleep: "🌙 Baby Sleep", tab_emergency: "🚨 First Aid",
+                calc_preg_title: "🤰 Due Date Calculator", calc_preg_desc: "Enter the first day of your last period:", btn_calc_preg: "Calculate Due Date",
+                calc_baby_title: "👶 Baby Age Calculator", calc_baby_desc: "Enter your baby's birth date:", btn_calc_baby: "Calculate Age",
+                label_vaccine: "Select baby age for vaccine details:", hospital_title: "🧳 Maternity Hospital Bag Checklist", hospital_desc: "Check off items you have packed:",
+                label_sleep: "Select baby age for sleep schedule:", comm_title: "Moms Community & Q&A 💬", comm_desc: "Ask questions and share tips with other mothers",
+                btn_post_q: "Post Question", market_title: "Kinder Essentials Marketplace 🛍️", market_desc: "Pre-loved baby items in excellent condition",
+                p1_title: "Foldable Light Baby Stroller", p2_title: "Wooden Baby Bed with Accessories", btn_contact: "Contact Seller",
+                form_title: "List Your Item for Sale 📲", form_desc: "Easily share clean baby items with other mothers",
+                label_title: "Product Name:", label_price: "Price (IQD):", label_phone: "WhatsApp Number:", btn_submit: "Post via WhatsApp",
+                footer_desc: "Your safe community for mother and child care."
+            }
+        };
+
+        function setLanguage(lang) {
+            const dir = (lang === 'en') ? 'ltr' : 'rtl';
+            document.documentElement.lang = lang;
+            document.documentElement.dir = dir;
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function openMainTab(tabId) {
+            document.querySelectorAll('.care-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.main-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function calculatePregnancy() {
+            var inputDate = document.getElementById('lastPeriodDate').value;
+            if (!inputDate) { alert("رجاءً اختاري تاريخاً 🌸"); return; }
+            var lmp = new Date(inputDate);
+            var dueDate = new Date(lmp);
+            dueDate.setDate(dueDate.getDate() + 280);
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('pregnancyResult').innerHTML = "✨ <b>موعد الولادة المتوقع:</b> <br><span style='color:#d81b60; font-size:18px; font-weight:bold;'>" + dueDate.toLocaleDateString('ar-EG', options) + "</span>";
+        }
+
+        function calculateBabyAge() {
+            var inputDate = document.getElementById('babyBirthDate').value;
+            if (!inputDate) { alert("رجاءً اختاري تاريخاً 🌸"); return; }
+            var birthDate = new Date(inputDate);
+            var today = new Date();
+            var years = today.getFullYear() - birthDate.getFullYear();
+            var months = today.getMonth() - birthDate.getMonth();
+            var days = today.getDate() - birthDate.getDate();
+            if (days < 0) { months--; days += 30; }
+            if (months < 0) { years--; months += 12; }
+            document.getElementById('babyAgeResult').innerHTML = "✨ <b>عمر الطفل:</b> <br><span style='color:#d81b60; font-size:18px; font-weight:bold;'>" + years + " سنة / " + months + " شهر / " + days + " يوم</span>";
+        }
+
+        function showVaccineInfo() {
+            var val = document.getElementById('vaccineAge').value;
+            var data = {
+                "birth": "<h3>📌 لقاحات حديث الولادة</h3><p>• البي سي جي (BCG) للسل.</p><p>• الجرعة الأولى للتهاب الكبد ب.</p>",
+                "2m": "<h3>📌 لقاحات عمر شهرين</h3><p>• اللقاح الخماسي (الجرعة الأولى).</p><p>• لقاح شلل الأطفال والروتا.</p>",
+                "4m": "<h3>📌 لقاحات عمر 4 أشهر</h3><p>• اللقاح الخماسي (الجرعة الثانية).</p><p>• المكورات الرئوية وشلل الأطفال.</p>",
+                "6m": "<h3>📌 لقاحات عمر 6 أشهر</h3><p>• اللقاح الخماسي (الجرعة الثالثة).</p><p>• قطرات شلل الأطفال الفموية.</p>",
+                "12m": "<h3>📌 لقاحات عمر سنة</h3><p>• لقاح الحصبة والنكاف والحميراء (MMR).</p>"
+            };
+            document.getElementById('vaccineResult').innerHTML = data[val];
+        }
+
+        function showSleepInfo() {
+            var val = document.getElementById('sleepAge').value;
+            var data = {
+                "0-3": "<h3>🌙 النوم من 0 إلى 3 أشهر</h3><p><b>مجموع النوم:</b> 14 - 17 ساعة يومياً.</p><p><b>الغفوات:</b> 3 إلى 5 غفوات.</p>",
+                "4-11": "<h3>🌙 النوم من 4 إلى 11 شهر</h3><p><b>مجموع النوم:</b> 12 - 15 ساعة يومياً.</p><p><b>الغفوات:</b> 2 إلى 3 غفوات.</p>",
+                "1-2": "<h3>🌙 النوم من سنة إلى سنتين</h3><p><b>مجموع النوم:</b> 11 - 14 ساعة يومياً.</p><p><b>الغفوات:</b> غفوة واحدة إلى غفوتين.</p>"
+            };
+            document.getElementById('sleepResult').innerHTML = data[val];
+        }
+
+        function postQuestion() {
+            var q = document.getElementById('questionInput').value;
+            if(!q) { alert("يرجى كتابة سؤال أولاً 🌸"); return; }
+            var list = document.getElementById('questionsContainer');
+            var card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = "<strong>أم جديدة:</strong><p>" + q + "</p><span class='q-reply'>💬 0 إجابات (بانتظار الرد)</span>";
+            list.prepend(card);
+            document.getElementById('questionInput').value = "";
+        }
+
+        function submitItem() {
+            var title = document.getElementById('title').value;
+            var price = document.getElementById('price').value;
+            var phone = document.getElementById('phone').value;
+            if (!title || !price || !phone) { alert("يرجى ملء جميع الحقول 🌸"); return; }
+            var myPhoneNumber = "9647000000000";
+            var message = "Kinder Platform Item:%0A" + encodeURIComponent(title) + "%0APrice: " + encodeURIComponent(price) + "%0APhone: " + encodeURIComponent(phone);
+            window.open("https://wa.me/" + myPhoneNumber + "?text=" + message, '_blank');
+        }
+    </script>
+</body>
+</html>
