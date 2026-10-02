@@ -1,0 +1,325 @@
+/* --- الإعدادات العامة والخطوط --- */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: #fff8f9;
+    color: #333;
+    direction: rtl;
+    text-align: right;
+}
+
+/* --- شريط التنقل (Navbar) --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #d81b60;
+}
+
+.lang-switcher {
+    display: flex;
+    gap: 5px;
+}
+
+.lang-btn {
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.lang-btn.active {
+    background: #d81b60;
+    color: #fff;
+    border-color: #d81b60;
+}
+
+/* --- الواجهة الترحيبية (Hero Section) --- */
+.hero-section {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #ffeef2 0%, #fff8f9 100%);
+}
+
+.hero-section h1 {
+    color: #d81b60;
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.hero-section p {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* --- الأزرار الرئيسية --- */
+.btn-primary {
+    display: inline-block;
+    background-color: #d81b60;
+    color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 12px rgba(216, 27, 96, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #c2185b;
+}
+
+.btn-secondary {
+    background-color: #f8bbd0;
+    color: #880e4f;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-submit {
+    background-color: #25d366;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* --- أقسام العناوين --- */
+.section-header {
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.section-header h2 {
+    color: #2c3e50;
+    font-size: 22px;
+}
+
+.section-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* --- قسم الأدوات والتبويبات --- */
+.main-care-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.main-tab-btn {
+    background: #ffffff;
+    border: 1px solid #f8bbd0;
+    color: #d81b60;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.main-tab-btn.active, .main-tab-btn:hover {
+    background: #d81b60;
+    color: #ffffff;
+}
+
+.care-tab-content {
+    display: none;
+}
+
+.care-tab-content.active {
+    display: block;
+}
+
+/* --- البطاقات والقوائم المنسدلة --- */
+.select-box {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.select-box select {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    font-size: 15px;
+    outline: none;
+    background: white;
+}
+
+.dev-card, .calc-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+    border: 1px solid #f0f0f0;
+}
+
+.calc-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.calc-result {
+    margin-top: 15px;
+    padding: 12px;
+    background: #fff5f8;
+    border-radius: 10px;
+}
+
+.calculators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* --- سوق المستعمل --- */
+.market-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(216, 27, 96, 0.85);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.price {
+    color: #d81b60;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* --- نموذج إضافة الغرض --- */
+.form-section {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* --- الذيل (Footer) --- */
+.footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 25px 20px;
+    margin-top: 50px;
+}
+
+.footer h3 {
+    color: #f8bbd0;
+    margin-bottom: 8px;
+}
+
+.copyright {
+    font-size: 12px;
+    color: #bdc3c7;
+    margin-top: 10px;
+}
