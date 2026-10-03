@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder Store | متجر المستلزمات العالمي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #d81b60;
+            --primary-hover: #c2185b;
+            --bg-body: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-body: #0f1115;
+            --card-bg: #1e222a;
+            --text-main: #f1f1f1;
+            --text-muted: #a0a0a0;
+            --border-color: #2e3440;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Top Announcement Bar */
+        .top-banner {
+            background: linear-gradient(90deg, #d81b60, #8e24aa);
+            color: white;
+            text-align: center;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Main Header */
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand-logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-bar-container {
+            flex: 1;
+            max-width: 550px;
+            position: relative;
+        }
+
+        .search-bar-container input {
+            width: 100%;
+            padding: 10px 18px;
+            padding-left: 45px;
+            border-radius: 25px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar-container input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .lang-select {
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Navigation Menu */
+        nav.main-nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            padding: 10px 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        /* Hero Showcase Header */
+        .hero-header {
+            max-width: 1200px;
+            margin: 20px auto 0;
+            padding: 0 20px;
+        }
+
+        .hero-banner-box {
+            background: linear-gradient(135deg, #ffe0ec 0%, #ffc1e3 100%);
+            border-radius: 16px;
+            padding: 40px 30px;
+            color: #d81b60;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dark-mode .hero-banner-box {
+            background: linear-gradient(135deg, #2c1a24 0%, #3a1528 100%);
+            color: #ff80ab;
+        }
+
+        .hero-text h1 { font-size: 28px; margin-bottom: 8px; }
+        .hero-text p { font-size: 15px; color: var(--text-muted); }
+
+        /* Main Store Layout */
+        .store-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar Filters */
+        .filters-sidebar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .filter-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .filter-list {
+            list-style: none;
+        }
+
+        .filter-list li {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .filter-list label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .filter-list input[type="checkbox"] {
+            accent-color: var(--primary-color);
+        }
+
+        /* Products Grid Header */
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .products-count { font-size: 14px; color: var(--text-muted); }
+
+        /* Global E-Commerce Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .product-img-box {
+            width: 100%;
+            height: 150px;
+            background: var(--bg-body);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            margin-bottom: 12px;
+        }
+
+        .product-category {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 5px 0;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            font-size: 12px;
+            color: #ffb400;
+            margin-bottom: 10px;
+        }
+
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .add-cart-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-cart-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+            padding: 40px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { text-decoration: none; color: var(--text-muted); font-size: 13px; }
+
+        .copyright {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .store-container { grid-template-columns: 1fr; }
+            .filters-sidebar { display: none; }
+            .header-container { flex-wrap: wrap; }
+            .search-bar-container { order: 3; width: 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط الترويجي العلوي -->
+    <div class="top-banner" data-i18n="top_promo">
+        ✨ شحن مجاني للطلبات الأكثر من 50,000 دينار | خصم 15% على مستلزمات حديثي الولادة
+    </div>
+
+    <!-- الهيدر الرئيسي للموقع -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="brand-logo">Kinder 🌸</a>
+            
+            <div class="search-bar-container">
+                <input type="text" id="searchInput" placeholder="ابحث عن المنتجات، السرة، الأسرة، المستلزمات..." onkeyup="filterProducts()">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="header-actions">
+                <button class="action-btn" onclick="toggleDarkMode()">🌙 <span data-i18n="mode">المظهر</span></button>
+                <select class="lang-select" onchange="switchLang(this.value)">
+                    <option value="ar">العربية (AR)</option>
+                    <option value="ku">الكوردية (KU)</option>
+                    <option value="en">English (EN)</option>
+                </select>
+                <button class="action-btn">🛒 <span data-i18n="cart">السلة (0)</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- قائمة التنقل العالمية -->
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="#" class="active" data-i18n="nav_all">جميع المنتجات</a></li>
+            <li><a href="#" data-i18n="nav_feeding">الرضاعة والتغذية</a></li>
+            <li><a href="#" data-i18n="nav_furniture">أثاث الأطفال</a></li>
+            <li><a href="#" data-i18n="nav_strollers">العربات والمقاعد</a></li>
+            <li><a href="#" data-i18n="nav_care">العناية بالبشرة</a></li>
+            <li><a href="#" data-i18n="nav_toys">الألعاب والتعليم</a></li>
+        </ul>
+    </nav>
+
+    <!-- الواجهة الترويجية Header Banner -->
+    <section class="hero-header">
+        <div class="hero-banner-box">
+            <div class="hero-text">
+                <h1 data-i18n="banner_title">عالم Kinder للمستلزمات الحديثة 🛍️</h1>
+                <p data-i18n="banner_sub">تسوقي أحدث وأفضل المنتجات الطبية المعتمدة لطفلكِ بأفضل الأسعار</p>
+            </div>
+            <div style="font-size: 60px;">👶✨</div>
+        </div>
+    </section>
+
+    <!-- محتوى المتجر الرئيسي -->
+    <div class="store-container">
+        
+        <!-- القائمة الجانبية للتصفية (Sidebar) -->
+        <aside class="filters-sidebar">
+            <h3 class="filter-title" data-i18n="filter_title">التصفية والنتائج</h3>
+            
+            <div class="filter-group">
+                <h4 data-i18n="filter_cat">الأقسام</h4>
+                <ul class="filter-list">
+                    <li><label><input type="checkbox" checked> <span data-i18n="cat_all">الكل</span></label></li>
+                    <li><label><input type="checkbox"> <span data-i18n="nav_feeding">الرضاعة والتغذية</span></label></li>
+                    <li><label><input type="checkbox"> <span data-i18n="nav_furniture">أثاث ونوم الأطفال</span></label></li>
+                    <li><label><input type="checkbox"> <span data-i18n="nav_strollers">عربات ومستلزمات سفر</span></label></li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h4 data-i18n="filter_brand">العلامة التجارية</h4>
+                <ul class="filter-list">
+                    <li><label><input type="checkbox"> Avent</label></li>
+                    <li><label><input type="checkbox"> Chicco</label></li>
+                    <li><label><input type="checkbox"> Pigeon</label></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- شبكة عرض المنتجات -->
+        <main class="products-section">
+            <div class="products-header">
+                <span class="products-count" data-i18n="count_text">عرض 6 من أصل 6 منتجات متوفرة</span>
+                <select class="lang-select" style="padding: 6px;">
+                    <option data-i18n="sort_popular">الأكثر شعبية</option>
+                    <option data-i18n="sort_low">السعر: من الأقل إلى الأعلى</option>
+                    <option data-i18n="sort_high">السعر: من الأعلى إلى الأقل</option>
+                </select>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- المنتجات يتم توليدها هنا عبر الكود -->
+            </div>
+        </main>
+
+    </div>
+
+    <!-- أسفل الموقع (Footer) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Kinder Store 🌸</h4>
+                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6;" data-i18n="footer_about">
+                    المنصة المتكاملة الأولى المعتمدة للعناية بالأم والطفل، نوفر لكِ أجود المستلزمات الطبية واليومية.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_links">روابط سريعة</h4>
+                <ul>
+                    <li><a href="#" data-i18n="nav_all">الرئيسية</a></li>
+                    <li><a href="#" data-i18n="nav_feeding">المنتجات</a></li>
+                    <li><a href="#" data-i18n="top_promo">العروض الخاصة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_help">المساعدة والدعم</h4>
+                <ul>
+                    <li><a href="#">أسئلة شائعة</a></li>
+                    <li><a href="#">سياسة الإرجاع</a></li>
+                    <li><a href="#">تواصل معنا</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Kinder Platform. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+
+    <script>
+        const productsList = [
+            { id: 1, icon: '🍼', category: 'الرضاعة والتغذية', title: 'رضّاعة أطفال طبية مضادة للمغص 260 مل', price: '15,000 د.ع', badge: 'الأكثر مبيعاً', rating: '★★★★★ (48)' },
+            { id: 2, icon: '🛏️', category: 'أثاث الأطفال', title: 'سرير أطفال خشبي خيزران مزود بهزاز', price: '85,000 د.ع', badge: 'جديد', rating: '★★★★☆ (22)' },
+            { id: 3, icon: '🛒', category: 'العربات', title: 'عربة أطفال خفيفة الوزن قابلة للطي للطيار', price: '120,000 د.ع', badge: 'خصم 10%', rating: '★★★★★ (64)' },
+            { id: 4, icon: '🧸', category: 'الألعاب والتعليم', title: 'مجموعة ألعاب مهدئة ومطورة للحواس', price: '10,000 د.ع', badge: 'مميز', rating: '★★★★☆ (19)' },
+            { id: 5, icon: '👕', category: 'الملابس', title: 'طقم ملابس قطن طبيعي لحديثي الولادة (5 قطعات)', price: '25,000 د.ع', badge: null, rating: '★★★★★ (31)' },
+            { id: 6, icon: '🧼', category: 'العناية بالبشرة', title: 'مجموعة العناية الشاملة ببشرة الطفل الرضيع', price: '18,000 د.ع', badge: null, rating: '★★★★☆ (15)' }
+        ];
+
+        const translations = {
+            ar: {
+                top_promo: "✨ شحن مجاني للطلبات الأكثر من 50,000 دينار | خصم 15% على مستلزمات حديثي الولادة",
+                mode: "المظهر", cart: "السلة (0)", nav_all: "جميع المنتجات", nav_feeding: "الرضاعة والتغذية",
+                nav_furniture: "أثاث الأطفال", nav_strollers: "العربات والمقاعد", nav_care: "العناية بالبشرة",
+                nav_toys: "الألعاب والتعليم", banner_title: "عالم Kinder للمستلزمات الحديثة 🛍️",
+                banner_sub: "تسوقي أحدث وأفضل المنتجات الطبية المعتمدة لطفلكِ بأفضل الأسعار",
+                filter_title: "التصفية والنتائج", filter_cat: "الأقسام", filter_brand: "العلامة التجارية",
+                cat_all: "الكل", count_text: "عرض 6 من أصل 6 منتجات متوفرة", sort_popular: "الأكثر شعبية",
+                sort_low: "السعر: من الأقل إلى الأعلى", sort_high: "السعر: من الأعلى إلى الأقل",
+                add_btn: "إضافة للسلة 🛒", footer_about: "المنصة المتكاملة الأولى المعتمدة للعناية بالأم والطفل.",
+                footer_links: "روابط سريعة", footer_help: "المساعدة والدعم"
+            },
+            ku: {
+                top_promo: "✨ گەیاندنی خۆڕایی بۆ داواکارییەکانی سەروو ٥٠,٠٠٠ دینار",
+                mode: "ڕووکار", cart: "سەبەتە (0)", nav_all: "سەرجەم بەرهەمەکان", nav_feeding: "شیردان و خۆراک",
+                nav_furniture: "کەلوپەلی نوستن", nav_strollers: "عەرەبانە و کورسی", nav_care: "چاودێری پێست",
+                nav_toys: "یاری و پەروەردە", banner_title: "جیهانی Kinder بۆ پێداویستییەکان 🛍️",
+                banner_sub: "باشترین و تازەترین بەرهەمە پزیشکییەکان بۆ کۆرپەکەت بکڕە",
+                filter_title: "فلتەرکردن", filter_cat: "بەشەکان", filter_brand: "بڕاندەکان",
+                cat_all: "هەموی", count_text: "پیشاندانی ٦ بەرهەم", sort_popular: "بەرچاوترین",
+                sort_low: "نرخ: لە کەمەوە بۆ زۆر", sort_high: "نرخ: لە زۆرەوە بۆ کەم",
+                add_btn: "زیادکردن بۆ سەبەتە 🛒", footer_about: "یەکەم پلاتفۆرمی تایبەت بە چاودێری دایک و منداڵ.",
+                footer_links: "بەستەرە خێراکان", footer_help: "یارمەتی و پشتیوانی"
+            },
+            en: {
+                top_promo: "✨ Free Shipping on orders over $50 | 15% OFF Newborn essentials",
+                mode: "Theme", cart: "Cart (0)", nav_all: "All Products", nav_feeding: "Feeding & Nursing",
+                nav_furniture: "Nursery Furniture", nav_strollers: "Strollers & Car Seats", nav_care: "Skincare",
+                nav_toys: "Toys & Learning", banner_title: "Kinder World Marketplace 🛍️",
+                banner_sub: "Shop top-rated medical & daily essentials for your child",
+                filter_title: "Filter Results", filter_cat: "Categories", filter_brand: "Brands",
+                cat_all: "All", count_text: "Showing 6 of 6 products", sort_popular: "Most Popular",
+                sort_low: "Price: Low to High", sort_high: "Price: High to Low",
+                add_btn: "Add to Cart 🛒", footer_about: "The leading trusted platform for mother & baby care.",
+                footer_links: "Quick Links", footer_help: "Help & Support"
+            }
+        };
+
+        let currentLang = 'ar';
+
+        function renderProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            items.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+                    <div class="product-img-box">${p.icon}</div>
+                    <div class="product-category">${p.category}</div>
+                    <div class="product-title">${p.title}</div>
+                    <div class="product-rating">${p.rating}</div>
+                    <div class="product-bottom">
+                        <span class="product-price">${p.price}</span>
+                        <button class="add-cart-btn" data-i18n="add_btn">${translations[currentLang].add_btn}</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = productsList.filter(p => p.title.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.documentElement.dir = (lang === 'en') ? 'ltr' : 'rtl';
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            renderProducts(productsList);
+        }
+
+        window.onload = () => {
+            renderProducts(productsList);
+        };
+    </script>
+</body>
+</html>
