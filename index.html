@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder - منصة الأم والطفل المتكاملة</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <meta name="theme-color" content="#d81b60">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIktpbmRlciBQbGF0Zm9ybSIsCiAgInNob3J0X25hbWUiOiAiS2luZGVyIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmY8ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjZDgxYjYwIgp9">
+
+    <style>
+        body {
+            padding-bottom: 75px; /* مساحة للشريط السفلي الثابت */
+        }
+
+        /* شريط التنقل السفلي الثابت */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 25%;
+        }
+
+        .nav-item.active {
+            color: #d81b60;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 18px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .tool-icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #fff5f8;
+            border: 1px solid #f8bbd0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 30px;
+        }
+
+        .tool-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .fetal-img-container {
+            margin: 15px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fff;
+            outline: 3px solid #f8bbd0;
+        }
+
+        .fetal-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .care-tab-content {
+            display: none;
+        }
+
+        .care-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* كارت عداد الركلات */
+        .kick-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #f8bbd0;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.08);
+            margin: 15px auto;
+            max-width: 500px;
+        }
+
+        .kick-btn {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d81b60, #ff4081);
+            color: white;
+            border: none;
+            font-size: 36px;
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.3);
+            cursor: pointer;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+
+        .kick-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* إضافة عناصر قائمة الحقيبة */
+        .add-custom-item-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-custom-item-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <div class="logo">Kinder 🌸</div>
+        <div class="lang-switcher">
+            <button id="btn-ar" onclick="switchLang('ar')" class="lang-btn active">AR</button>
+            <button id="btn-ku" onclick="switchLang('ku')" class="lang-btn">KU</button>
+            <button id="btn-en" onclick="switchLang('en')" class="lang-btn">EN</button>
+        </div>
+    </nav>
+
+    <!-- الصفحة الرئيسية / الترحيب -->
+    <div id="section-home">
+        <main class="hero-section">
+            <h1 data-key="hero_title">مرحباً بكِ في منصة Kinder</h1>
+            <p data-key="hero_desc">مساحتكِ الشاملة لرعاية الأم والطفل، متابعة الحمل، الحاسبات، واللقاحات...</p>
+            <a href="#tools-section" onclick="navigateTo('section-tools')" class="btn-primary" data-key="hero_btn">استكشفي الأدوات الذكية</a>
+        </main>
+    </div>
+
+    <!-- قسم الأدوات والميزات -->
+    <div id="section-tools" style="display: block;">
+        <section id="tools-section" class="main-care-section">
+            <div class="section-header">
+                <h2 data-key="tools_title">الأدوات والميزات 🛠️✨</h2>
+                <p data-key="tools_desc">كل ما تحتاجينه في مكان واحد بتصميم بسيط وسهل</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-card" onclick="openMainTab('preg-fruit-tab')">
+                    <div class="tool-icon-circle">🤰</div>
+                    <div class="tool-title" data-key="t_fetal">تطورات جنيني</div>
+                </div>
+
+                <div class="tool-card" onclick="openMainTab('kick-tab')">
+                    <div class="tool-icon-circle">👶</div>
+                    <div class="tool-title">حاسبة ركلات الجنين</div>
+                </div>
+
+                <div class="tool-card" onclick="openMainTab('period-tab')">
+                    <div class="tool-icon-circle">🪷</div>
+                    <div class="tool-title" data-key="t_period">حاسبة الدورة والتبويض</div>
+                </div>
+
+                <div class="tool-card" onclick="openMainTab('calc-tab')">
+                    <div class="tool-icon-circle">📅</div>
+                    <div class="tool-title" data-key="t_due">حاسبة موعد الولادة</div>
+                </div>
+
+                <div class="tool-card" onclick="openMainTab('vaccine-tab')">
+                    <div class="tool-icon-circle">⏰</div>
+                    <div class="tool-title" data-key="t_vaccine">منبه اللقاحات</div>
+                </div>
+
+                <div class="tool-card" onclick="openMainTab('hospital-tab')">
+                    <div class="tool-icon-circle">🧳</div>
+                    <div class="tool-title" data-key="t_bag">حقيبة الولادة</div>
+                </div>
+            </div>
+
+            <!-- 1. عداد ركلات الجنين -->
+            <div id="kick-tab" class="care-tab-content">
+                <div class="kick-card">
+                    <h3>🦶 حاسبة ركلات الجنين (Kick Counter)</h3>
+                    <p style="font-size:13px; color:#666;">اضغطي على الزر في كل مرة تشعرين فيها بركلة أو حركة للجنين:</p>
+                    <button class="kick-btn" onclick="recordKick()">🦶</button>
+                    <h2 style="color:#d81b60; margin:10px 0;">عدد الركلات اليوم: <span id="kickCount">0</span></h2>
+                    <p id="lastKickTime" style="font-size:12px; color:#888;">لم يتم تسجيل ركلات اليوم بعد.</p>
+                    <button class="btn-secondary" onclick="resetKicks()" style="margin-top:10px; max-width:200px;">إعادة ضبط العداد</button>
+                </div>
+            </div>
+
+            <!-- 2. حقيبة الولادة مع ميزة الإضافة -->
+            <div id="hospital-tab" class="care-tab-content">
+                <div class="checklist-card" style="background: white; padding: 20px; border-radius: 15px; max-width:500px; margin:0 auto;">
+                    <h3 data-key="bag_title">🧳 قائمة مستلزمات مستشفى الولادة</h3>
+                    <p data-key="bag_desc">حددي الأغراض التي قمتِ بتجهيزها في حقيبتكِ:</p>
+                    <div id="checklistItems" class="checklist-items" style="line-height: 2;">
+                        <label><input type="checkbox"> <span data-key="bag_i1">ملابس قطنية مريحة للأم (2-3 طقم)</span></label><br>
+                        <label><input type="checkbox"> <span data-key="bag_i2">حفاضات أطفال ومبللة لحديثي الولادة</span></label><br>
+                        <label><input type="checkbox"> <span data-key="bag_i3">ملابس وأفارولات للطفل (3 أطقم)</span></label><br>
+                        <label><input type="checkbox"> <span data-key="bag_i4">بطانية ولفافة ناعمة للطفل</span></label><br>
+                    </div>
+
+                    <!-- إضافة أغراض خاصة للأم -->
+                    <div class="add-custom-item-box">
+                        <input type="text" id="customBagInput" placeholder="أضيفي غرضاً جديداً للقائمة...">
+                        <button class="btn-primary" onclick="addCustomBagItem()" style="width: auto; padding: 0 15px;">إضافة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بكتيريا التبويبات السابقة محفوظة كاملاً هنا -->
+            <div id="preg-fruit-tab" class="care-tab-content">
+                <div class="select-box">
+                    <label for="pregMonthSelect"><b data-key="lbl_preg_select">اختاري شهر الحمل لمتابعة حجم طفلكِ:</b></label>
+                    <select id="pregMonthSelect" onchange="showPregnancyFruitInfo()">
+                        <option value="1">الشهر الأول (الأسابيع 1-4)</option>
+                        <option value="2">الشهر الثاني (الأسابيع 5-8)</option>
+                        <option value="3">الشهر الثالث (الأسابيع 9-12)</option>
+                    </select>
+                </div>
+                <div id="fruitCardResult" class="dev-card" style="text-align: center; border-top: 4px solid #d81b60;"></div>
+            </div>
+
+            <div id="period-tab" class="care-tab-content">
+                <div class="calc-card" style="max-width: 550px; margin: 0 auto;">
+                    <h3 data-key="p_title">🌸 حاسبة ومُتتبع الدورة الشهرية والخصوبة</h3>
+                    <input type="date" id="lastPeriodStartDate" class="calc-input">
+                    <button type="button" class="btn-primary" onclick="calculatePeriodAndOvulation()" data-key="btn_calc_p">احسبي المواعيد واعرضي الرزنامة</button>
+                    <div id="periodResult" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- قسم السوق -->
+    <div id="section-market" style="display: none;">
+        <section id="market" class="market-section">
+            <div class="section-header">
+                <h2 data-key="m_title">سوق Kinder للمستلزمات 🛍️</h2>
+                <p data-key="m_desc">أغراض أطفال مستعملة بحالة ممتازة بأسعار مناسبة</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-badge" data-key="p1_badge">مستعمل - ممتاز</div>
+                    <img src="https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?w=400&q=80" alt="عربانة">
+                    <div class="product-info">
+                        <h3 data-key="p1_title">عربانة أطفال خفيفة للطي</h3>
+                        <p class="price" data-key="p1_price">25,000 د.ع</p>
+                        <button class="btn-secondary" data-key="btn_contact">تواصل مع البائعة</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- شريط التنقل السفلي الثابت كالموبيل -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('section-tools', this)">
+            <span class="nav-icon">🛠️</span>
+            <span>الأدوات</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('section-market', this)">
+            <span class="nav-icon">🛍️</span>
+            <span>السوق</span>
+        </div>
+        <div class="nav-item" onclick="openMainTab('hospital-tab')">
+            <span class="nav-icon">🧳</span>
+            <span>الحقيبة</span>
+        </div>
+        <div class="nav-item" onclick="openMainTab('kick-tab')">
+            <span class="nav-icon">🦶</span>
+            <span>الركلات</span>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(sectionId, element) {
+            document.getElementById('section-tools').style.display = 'none';
+            document.getElementById('section-market').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openMainTab(tabId) {
+            navigateTo('section-tools');
+            document.querySelectorAll('.care-tab-content').forEach(el => el.classList.remove('active'));
+            var target = document.getElementById(tabId);
+            if(target) {
+                target.classList.add('active');
+                setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            }
+        }
+
+        // البرمجية الخاصة بعداد الركلات
+        let kickCount = parseInt(localStorage.getItem('kinder_kicks') || '0');
+        document.getElementById('kickCount').textContent = kickCount;
+
+        function recordKick() {
+            kickCount++;
+            localStorage.setItem('kinder_kicks', kickCount);
+            document.getElementById('kickCount').textContent = kickCount;
+            let now = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastKickTime').textContent = "آخر ركلة سجّلت في: " + now;
+        }
+
+        function resetKicks() {
+            kickCount = 0;
+            localStorage.setItem('kinder_kicks', '0');
+            document.getElementById('kickCount').textContent = '0';
+            document.getElementById('lastKickTime').textContent = "تم إعادة الضبط.";
+        }
+
+        // إضافة عنصر جديد لحقيبة المستشفى
+        function addCustomBagItem() {
+            var val = document.getElementById('customBagInput').value;
+            if(!val.trim()) return;
+            var container = document.getElementById('checklistItems');
+            var label = document.createElement('label');
+            label.innerHTML = '<input type="checkbox"> <span>' + val + '</span><br>';
+            container.appendChild(label);
+            document.getElementById('customBagInput').value = '';
+        }
+    </script>
+</body>
+</html>
