@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder - منصة الأم والطفل المتكاملة</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- PWA Web App Meta Tags -->
+    <meta name="theme-color" content="#d81b60">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIktpbmRlciBQbGF0Zm9ybSIsCiAgInNob3J0X25hbWUiOiAiS2luZGVyIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmY4ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjZDgxYjYwIgp9">
+
+    <style>
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 18px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.12);
+        }
+
+        .tool-icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #fff5f8;
+            border: 1px solid #f8bbd0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 30px;
+        }
+
+        .tool-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+
+        .fetal-img-container {
+            margin: 15px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(216, 27, 96, 0.25);
+            border: 4px solid #fff;
+            outline: 3px solid #f8bbd0;
+        }
+
+        .fetal-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .calendar-container {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .calendar-header {
+            font-weight: bold;
+            color: #d81b60;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .cal-day-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #888;
+            padding-bottom: 5px;
+        }
+
+        .cal-day {
+            padding: 8px 2px;
+            border-radius: 10px;
+            font-size: 13px;
+            background: #fafafa;
+            border: 1px solid #eee;
+        }
+
+        .cal-day.period { background: #ffcdd2; color: #b71c1c; font-weight: bold; border-color: #ef9a9a; }
+        .cal-day.ovulation { background: #e1bee7; color: #4a148c; font-weight: bold; border-color: #ce93d8; }
+        .cal-day.fertile { background: #e8f5e9; color: #1b5e20; font-weight: bold; border-color: #a5d6a7; }
+
+        .symptoms-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .symptom-chip {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .symptom-chip.selected {
+            background: #d81b60;
+            color: white;
+            border-color: #d81b60;
+        }
+
+        .period-result-box {
+            background: #fff5f8;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #f8bbd0;
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        .result-item {
+            margin-bottom: 12px;
+        }
+
+        .result-item strong {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .result-value {
+            color: #d81b60;
+            font-weight: 800;
+            font-size: 16px;
+            display: block;
+        }
+
+        .care-tab-content {
+            display: none;
+        }
+
+        .care-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #ffeef2 0%, #fff 100%);
+            border: 1px solid #f8bbd0;
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .names-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .name-box {
+            background: #ffffff;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .name-box h4 {
+            color: #d81b60;
+            margin-bottom: 3px;
+        }
+
+        .name-box p {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شريط التنقل (Navbar) -->
+    <nav class="navbar">
+        <div class="logo">Kinder 🌸</div>
+        <div class="lang-switcher">
+            <button id="btn-ar" onclick="switchLang('ar')" class="lang-btn active">AR</button>
+            <button id="btn-ku" onclick="switchLang('ku')" class="lang-btn">KU</button>
+            <button id="btn-en" onclick="switchLang('en')" class="lang-btn">EN</button>
+        </div>
+    </nav>
+
+    <!-- الواجهة الترحيبية -->
+    <main class="hero-section">
+        <h1 data-key="hero_title">مرحباً بكِ في منصة Kinder</h1>
+        <p data-key="hero_desc">مساحتكِ الشاملة لرعاية الأم والطفل، متابعة الحمل، الحاسبات، واللقاحات...</p>
+        <a href="#tools-section" class="btn-primary" data-key="hero_btn">استكشفي الأدوات الذكية</a>
+    </main>
+
+    <!-- كارت نصيحة اليوم للأم -->
+    <div style="max-width: 500px; margin: 15px auto 0; padding: 0 15px;">
+        <div class="tip-card">
+            <h4 style="color:#d81b60; margin-bottom:5px;" data-key="tip_header">💡 نصيحة اليوم للأم:</h4>
+            <p id="dailyTipText" style="font-size:13px; color:#555;" data-key="tip_text">شرب الماء بانتظام يساعد على تجدد السائل الأمنيوسي ويقلل التعب والإرهاق اليومي.</p>
+        </div>
+    </div>
+
+    <!-- القسم الرئيسي للخدمات والأدوات -->
+    <section id="tools-section" class="main-care-section">
+        <div class="section-header">
+            <h2 data-key="tools_title">الأدوات والميزات 🛠️✨</h2>
+            <p data-key="tools_desc">كل ما تحتاجينه في مكان واحد بتصميم بسيط وسهل</p>
+        </div>
+
+        <!-- شبكة الأيقونات التفاعلية -->
+        <div class="tools-grid">
+            <div class="tool-card" onclick="openMainTab('preg-fruit-tab')">
+                <div class="tool-icon-circle">🤰</div>
+                <div class="tool-title" data-key="t_fetal">تطورات جنيني</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('period-tab')">
+                <div class="tool-icon-circle">🪷</div>
+                <div class="tool-title" data-key="t_period">حاسبة الدورة والتبويض</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('calc-tab')">
+                <div class="tool-icon-circle">📅</div>
+                <div class="tool-title" data-key="t_due">حاسبة موعد الولادة</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('vaccine-tab')">
+                <div class="tool-icon-circle">⏰</div>
+                <div class="tool-title" data-key="t_vaccine">منبه اللقاحات</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('nutrition-tab')">
+                <div class="tool-icon-circle">🥦</div>
+                <div class="tool-title" data-key="t_nutrition">دليل التغذية والأطعمة</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('growth-tab')">
+                <div class="tool-icon-circle">⚖️</div>
+                <div class="tool-title" data-key="t_growth">النمو والوزن والمقاسات</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('names-tab')">
+                <div class="tool-icon-circle">📖</div>
+                <div class="tool-title" data-key="t_names">دليل أسماء الأطفال</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('relax-tab')">
+                <div class="tool-icon-circle">🧘‍♀️</div>
+                <div class="tool-title" data-key="t_relax">تمارين التنفس والاسترخاء</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('baby-dev-tab')">
+                <div class="tool-icon-circle">👶</div>
+                <div class="tool-title" data-key="t_baby">تطور الطفل شهرياً</div>
+            </div>
+
+            <div class="tool-card" onclick="openMainTab('hospital-tab')">
+                <div class="tool-icon-circle">🧳</div>
+                <div class="tool-title" data-key="t_bag">حقيبة الولادة</div>
+            </div>
+        </div>
+
+        <!-- 1. تطورات جنيني -->
+        <div id="preg-fruit-tab" class="care-tab-content">
+            <div class="select-box">
+                <label for="pregMonthSelect"><b data-key="lbl_preg_select">اختاري شهر الحمل لمتابعة حجم طفلكِ:</b></label>
+                <select id="pregMonthSelect" onchange="showPregnancyFruitInfo()">
+                    <option value="1">الشهر الأول (الأسابيع 1-4)</option>
+                    <option value="2">الشهر الثاني (الأسابيع 5-8)</option>
+                    <option value="3">الشهر الثالث (الأسابيع 9-12)</option>
+                    <option value="4">الشهر الرابع (الأسابيع 13-16)</option>
+                    <option value="5">الشهر الخامس (الأسابيع 17-20)</option>
+                    <option value="6">الشهر السادس (الأسابيع 21-24)</option>
+                    <option value="7">الشهر السابع (الأسابيع 25-28)</option>
+                    <option value="8">الشهر الثامن (الأسابيع 29-32)</option>
+                    <option value="9">الشهر التاسع (الأسابيع 33-40)</option>
+                </select>
+            </div>
+            <div id="fruitCardResult" class="dev-card" style="text-align: center; border-top: 4px solid #d81b60;"></div>
+        </div>
+
+        <!-- 2. حاسبة الدورة والتبويض -->
+        <div id="period-tab" class="care-tab-content">
+            <div class="calc-card" style="max-width: 550px; margin: 0 auto;">
+                <h3 data-key="p_title">🌸 حاسبة ومُتتبع الدورة الشهرية والخصوبة</h3>
+                <p data-key="p_lbl1">أدخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+                <input type="date" id="lastPeriodStartDate" class="calc-input">
+                <p data-key="p_lbl2">متوسط طول الدورة (عادةً 28 يوم):</p>
+                <input type="number" id="cycleLength" class="calc-input" value="28" min="20" max="45">
+
+                <div style="margin: 15px 0;">
+                    <p><b data-key="p_lbl3">الأعراض والحالة الجسدية/المزاجية الحالية:</b></p>
+                    <div class="symptoms-grid">
+                        <span class="symptom-chip" data-symptom="صداع" onclick="toggleSymptom(this)">👑 صداع</span>
+                        <span class="symptom-chip" data-symptom="مغص" onclick="toggleSymptom(this)">⚡ مغص وتقلصات</span>
+                        <span class="symptom-chip" data-symptom="انتفاخ" onclick="toggleSymptom(this)">🎈 انتفاخ</span>
+                        <span class="symptom-chip" data-symptom="تعب" onclick="toggleSymptom(this)">😴 تعب ونعاس</span>
+                        <span class="symptom-chip" data-symptom="تقلب مزاج" onclick="toggleSymptom(this)">😭 تقلب مزاج</span>
+                        <span class="symptom-chip" data-symptom="شهية" onclick="toggleSymptom(this)">🌌 شهية مفتوحة</span>
+                        <span class="symptom-chip" data-symptom="حب شباب" onclick="toggleSymptom(this)">🧴 ظهور حب الشباب</span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary" onclick="calculatePeriodAndOvulation()" data-key="btn_calc_p">احسبي المواعيد واعرضي الرزنامة</button>
+
+                <div id="periodResult" style="display:none;"></div>
+                <div id="savedSymptomsNote" style="display:none; margin-top:10px; font-size:13px; color:#c2185b; background:#ffeef2; padding:8px 12px; border-radius:10px; text-align:center;"></div>
+                <div id="calendarArea" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- 3. الحاسبات الذكية -->
+        <div id="calc-tab" class="care-tab-content">
+            <div class="calculators-grid">
+                <div class="calc-card">
+                    <h3 data-key="c_due_title">🤰 حاسبة موعد الولادة المتوقع</h3>
+                    <p data-key="p_lbl1">أدخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+                    <input type="date" id="lastPeriodDate" class="calc-input">
+                    <button type="button" class="btn-primary" onclick="calculatePregnancy()" data-key="btn_calc_due">احسبي موعد الولادة</button>
+                    <div id="pregnancyResult" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3 data-key="c_baby_title">👶 حاسبة عمر الطفل الدقيقة</h3>
+                    <p data-key="p_lbl4">أدخلي تاريخ ميلاد طفلكِ:</p>
+                    <input type="date" id="babyBirthDate" class="calc-input">
+                    <button type="button" class="btn-primary" onclick="calculateBabyAge()" data-key="btn_calc_baby">احسبي عمر طفلكِ</button>
+                    <div id="babyAgeResult" class="calc-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. منبه اللقاحات -->
+        <div id="vaccine-tab" class="care-tab-content">
+            <div class="select-box">
+                <label for="vaccineAge"><b data-key="lbl_vac_select">اختاري عمر الطفل لتفاصيل اللقاحات والتنبيه:</b></label>
+                <select id="vaccineAge" onchange="showVaccineInfo()">
+                    <option value="birth">عند الولادة (حديث الولادة)</option>
+                    <option value="2m">عمر شهرين</option>
+                    <option value="4m">عمر 4 أشهر</option>
+                    <option value="6m">عمر 6 أشهر</option>
+                    <option value="9m">عمر 9 أشهر</option>
+                    <option value="12m">عمر سنة (12 شهر)</option>
+                    <option value="18m">عمر 18 شهر</option>
+                </select>
+            </div>
+            <div id="vaccineResult" class="dev-card"></div>
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn-secondary" onclick="setVaccineReminder()" style="max-width: 300px;" data-key="btn_remind">⏰ تفعيل منبه التذكير بالتطعيم</button>
+            </div>
+        </div>
+
+        <!-- 5. دليل التغذية للأم والطفل -->
+        <div id="nutrition-tab" class="care-tab-content">
+            <div class="calc-card" style="max-width: 600px; margin: 0 auto; text-align:right;">
+                <h3 data-key="nut_title">🥦 دليل التغذية الصحية والوجبات</h3>
+                
+                <h4 style="color:#d81b60; margin-top:15px;" data-key="nut_preg_title">🤰 تغذية الحامل (المسموح والممنوع):</h4>
+                <p data-key="nut_preg_good">✅ <b>المرغوب:</b> الخضار الورقية، الأسماك الغنية بأوميغا 3 (المطهوة جيداً)، الفواكه الطازجة، المكسرات واللبن.</p>
+                <p data-key="nut_preg_bad">❌ <b>الممنوع:</b> اللحوم والأسماك النيئة (سوشي)، الأجبان غير المبسترة، الكافيين العالي، والأطعمة السريعة المشبعة بالدهون.</p>
+
+                <h4 style="color:#d81b60; margin-top:15px;" data-key="nut_baby_title">👶 إدخال الطعام للطفل (من عمر 6 أشهر):</h4>
+                <p data-key="nut_baby_m6">• <b>6-7 أشهر:</b> خضراوات مهروسة ناعمة (كوسا، جزر، بطاطا حلوة).</p>
+                <p data-key="nut_baby_m8">• <b>8-9 أشهر:</b> فواكه هرس خفيف (تفاح، موز، أفوكادو) صفار بيض مسلوق.</p>
+                <p data-key="nut_baby_m10">• <b>10-12 شهر:</b> قطع صغيرة طرية من الدجاج والرز والخضار المطهوة.</p>
+            </div>
+        </div>
+
+        <!-- 6. النمو والوزن والمقاسات -->
+        <div id="growth-tab" class="care-tab-content">
+            <div class="calculators-grid">
+                <div class="calc-card">
+                    <h3 data-key="gw_preg_title">🤰 حاسبة زيادات وزن الحمل</h3>
+                    <p data-key="gw_preg_lbl">أدخلي وزنكِ قبل الحمل (كغم):</p>
+                    <input type="number" id="prePregWeight" class="calc-input" placeholder="مثال: 60">
+                    <button class="btn-primary" onclick="calcPregWeight()" data-key="btn_calc">احسبي الزيادة الطبيعية</button>
+                    <div id="pregWeightResult" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3 data-key="gw_diaper_title">👶 دليل مقاس الحفاضات والملابس</h3>
+                    <p data-key="gw_diaper_lbl">أدخلي وزن الطفل الحالي (كغم):</p>
+                    <input type="number" id="babyWeight" class="calc-input" placeholder="مثال: 5.5">
+                    <button class="btn-primary" onclick="calcDiaperSize()" data-key="btn_calc_size">اعرفي المقاس المناسب</button>
+                    <div id="diaperResult" class="calc-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. دليل الأسماء ومعانيها -->
+        <div id="names-tab" class="care-tab-content">
+            <div class="calc-card" style="max-width: 600px; margin: 0 auto;">
+                <h3 data-key="names_title">📖 دليل أسماء الأطفال ومعانيها</h3>
+                <p data-key="names_desc">اكتشفي أجمل الأسماء العربية والكردية والمعاصرة:</p>
+                
+                <div class="names-list">
+                    <div class="name-box"><h4 data-key="n1_title">إيلين</h4><p data-key="n1_desc">بريق الشمس أو أجمل النساء</p></div>
+                    <div class="name-box"><h4 data-key="n2_title">جيهان</h4><p data-key="n2_desc">العالم والسيادة (اسم كردي)</p></div>
+                    <div class="name-box"><h4 data-key="n3_title">آران</h4><p data-key="n3_desc">النشاط والسطوع</p></div>
+                    <div class="name-box"><h4 data-key="n4_title">سيلا</h4><p data-key="n4_desc">الجمع واللم شمل الأحباء</p></div>
+                    <div class="name-box"><h4 data-key="n5_title">أرين</h4><p data-key="n5_desc">النشاط والقوة (اسم كردي)</p></div>
+                    <div class="name-box"><h4 data-key="n6_title">ميرال</h4><p data-key="n6_desc">أنثى الغزال الصغير</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. تمارين التنفس والاسترخاء -->
+        <div id="relax-tab" class="care-tab-content">
+            <div class="calc-card" style="max-width: 500px; margin: 0 auto; text-align:center;">
+                <h3 data-key="relax_title">🧘‍♀️ تمارين التنفس والتهدئة للأم</h3>
+                <p style="margin: 10px 0; color:#555;" data-key="relax_desc">تمرين التنفس العميق يساعدكِ على تجديد طاقتكِ وتقليل القلق أثناء الحمل أو أثناء نوبات بكي الطفل:</p>
+                <div style="background:#fff0f5; padding:20px; border-radius:15px; margin:15px 0;">
+                    <h2 id="breathTimer" style="color:#d81b60;" data-key="breath_start">شهيق (استنشقي للداخل)... 4 ثواني</h2>
+                </div>
+                <button class="btn-primary" onclick="startBreathing()" data-key="btn_breath">ابدأي جلسة التنفس لدقيقة واحدة</button>
+            </div>
+        </div>
+
+        <!-- 9. تطورات الطفل -->
+        <div id="baby-dev-tab" class="care-tab-content">
+            <div class="select-box">
+                <label for="babyDevMonth"><b data-key="lbl_baby_select">اختاري عمر الطفل بالشهور:</b></label>
+                <select id="babyDevMonth" onchange="showBabyDevInfo()">
+                    <option value="1">الشهر الأول</option>
+                    <option value="2">الشهر الثاني</option>
+                    <option value="3">الشهر الثالث</option>
+                    <option value="4">الشهر الرابع</option>
+                    <option value="6">الشهر السادس</option>
+                    <option value="9">الشهر التاسع</option>
+                    <option value="12">السنة الأولى (12 شهر)</option>
+                </select>
+            </div>
+            <div id="babyDevResult" class="dev-card"></div>
+        </div>
+
+        <!-- 10. حقيبة الولادة -->
+        <div id="hospital-tab" class="care-tab-content">
+            <div class="checklist-card" style="background: white; padding: 20px; border-radius: 15px;">
+                <h3 data-key="bag_title">🧳 قائمة مستلزمات مستشفى الولادة</h3>
+                <p data-key="bag_desc">حددي الأغراض التي قمتِ بتجهيزها في حقيبتكِ:</p>
+                <div class="checklist-items" style="line-height: 2;">
+                    <label><input type="checkbox"> <span data-key="bag_i1">ملابس قطنية مريحة للأم (2-3 طقم)</span></label><br>
+                    <label><input type="checkbox"> <span data-key="bag_i2">حفاضات أطفال ومبللة لحديثي الولادة</span></label><br>
+                    <label><input type="checkbox"> <span data-key="bag_i3">ملابس وأفارولات للطفل (3 أطقم)</span></label><br>
+                    <label><input type="checkbox"> <span data-key="bag_i4">بطانية ولفافة ناعمة للطفل</span></label><br>
+                    <label><input type="checkbox"> <span data-key="bag_i5">فوط صحية ومستلزمات العناية الشخصية</span></label><br>
+                    <label><input type="checkbox"> <span data-key="bag_i6">المستندات الطبية والهوية الشخصية</span></label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- سوق المستعمل -->
+    <section id="market" class="market-section">
+        <div class="section-header">
+            <h2 data-key="m_title">سوق Kinder للمستلزمات 🛍️</h2>
+            <p data-key="m_desc">أغراض أطفال مستعملة بحالة ممتازة بأسعار مناسبة</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-badge" data-key="p1_badge">مستعمل - ممتاز</div>
+                <img src="https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?w=400&q=80" alt="عربانة">
+                <div class="product-info">
+                    <h3 data-key="p1_title">عربانة أطفال خفيفة للطي</h3>
+                    <p class="price" data-key="p1_price">25,000 د.ع</p>
+                    <button class="btn-secondary" data-key="btn_contact">تواصل مع البائعة</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-badge" data-key="p2_badge">مستعمل - كالجديد</div>
+                <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80" alt="سرير">
+                <div class="product-info">
+                    <h3 data-key="p2_title">سرير خشبي للأطفال مع ملحقاته</h3>
+                    <p class="price" data-key="p2_price">45,000 د.ع</p>
+                    <button class="btn-secondary" data-key="btn_contact">تواصل مع البائعة</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- إضافة غرض -->
+    <section id="add-item" class="form-section">
+        <div class="form-container">
+            <h2 data-key="f_title">أضيفي غرضكِ للبيع 📲</h2>
+            <p data-key="f_desc">شاركي مستلزمات طفلكِ النظيفة مع أمهات آخريات بسهولة</p>
+            <form>
+                <div class="form-group">
+                    <label for="title" data-key="lbl_item">اسم المنتج:</label>
+                    <input type="text" id="title" placeholder="مثال: عربانة أطفال">
+                </div>
+                <div class="form-group">
+                    <label for="price" data-key="lbl_price">السعر (بالدينار):</label>
+                    <input type="text" id="price" placeholder="مثال: 20,000">
+                </div>
+                <div class="form-group">
+                    <label for="phone" data-key="lbl_phone">رقم الواتساب للتواصل:</label>
+                    <input type="tel" id="phone" placeholder="07xxxxxxxxx">
+                </div>
+                <button type="button" class="btn-submit" onclick="submitItem()" data-key="btn_wa">نشر الغرض عبر الواتساب</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Kinder 🌸</h3>
+            <p data-key="footer_desc">مجتمعكِ الآمن لرعاية الأم والطفل ومتابعة رحلة الحمل والنمو.</p>
+            <p class="copyright">جميع الحقوق محفوظة © 2026 Kinder</p>
+        </div>
+    </footer>
+
+    <script>
+        const langData = {
+            ar: {
+                hero_title: "مرحباً بكِ في منصة Kinder",
+                hero_desc: "مساحتكِ الشاملة لرعاية الأم والطفل، متابعة الحمل، الحاسبات، واللقاحات...",
+                hero_btn: "استكشفي الأدوات الذكية",
+                tip_header: "💡 نصيحة اليوم للأم:",
+                tip_text: "شرب الماء بانتظام يساعد على تجدد السائل الأمنيوسي ويقلل التعب والإرهاق اليومي.",
+                tools_title: "الأدوات والميزات 🛠✨",
+                tools_desc: "كل ما تحتاجينه في مكان واحد بتصميم بسيط وسهل",
+                t_fetal: "تطورات جنيني",
+                t_period: "حاسبة الدورة والتبويض",
+                t_due: "حاسبة موعد الولادة",
+                t_vaccine: "منبه اللقاحات",
+                t_nutrition: "دليل التغذية والأطعمة",
+                t_growth: "النمو والوزن والمقاسات",
+                t_names: "دليل أسماء الأطفال",
+                t_relax: "تمارين التنفس والاسترخاء",
+                t_baby: "تطور الطفل شهرياً",
+                t_bag: "حقيبة الولادة",
+                lbl_preg_select: "اختاري شهر الحمل لمتابعة حجم طفلكِ:",
+                p_title: "🌸 حاسبة ومُتتبع الدورة الشهرية والخصوبة",
+                p_lbl1: "أدخلي تاريخ أول يوم من آخر دورة شهرية:",
+                p_lbl2: "متوسط طول الدورة (عادةً 28 يوم):",
+                p_lbl3: "الأعراض والحالة الجسدية/المزاجية الحالية:",
+                btn_calc_p: "احسبي المواعيد واعرضي الرزنامة",
+                c_due_title: "🤰 حاسبة موعد الولادة المتوقع",
+                btn_calc_due: "احسبي موعد الولادة",
+                c_baby_title: "👶 حاسبة عمر الطفل الدقيقة",
+                p_lbl4: "أدخلي تاريخ ميلاد طفلكِ:",
+                btn_calc_baby: "احسبي عمر طفلكِ",
+                lbl_vac_select: "اختاري عمر الطفل لتفاصيل اللقاحات والتنبيه:",
+                btn_remind: "⏰ تفعيل منبه التذكير بالتطعيم",
+                nut_title: "🥦 دليل التغذية الصحية والوجبات",
+                nut_preg_title: "🤰 تغذية الحامل (المسموح والممنوع):",
+                nut_preg_good: "✅ المرغوب: الخضار الورقية، الأسماك الغنية بأوميغا 3 (المطهوة جيداً)، الفواكه الطازجة، المكسرات واللبن.",
+                nut_preg_bad: "❌ الممنوع: اللحوم والأسماك النيئة (سوشي)، الأجبان غير المبسترة، الكافيين العالي، والأطعمة السريعة المشبعة بالدهون.",
+                nut_baby_title: "👶 إدخال الطعام للطفل (من عمر 6 أشهر):",
+                nut_baby_m6: "• 6-7 أشهر: خضراوات مهروسة ناعمة (كوسا، جزر، بطاطا حلوة).",
+                nut_baby_m8: "• 8-9 أشهر: فواكه هرس خفيف (تفاح، موز، أفوكادو) صفار بيض مسلوق.",
+                nut_baby_m10: "• 10-12 شهر: قطع صغيرة طرية من الدجاج والرز والخضار المطهوة.",
+                gw_preg_title: "🤰 حاسبة زيادات وزن الحمل",
+                gw_preg_lbl: "أدخلي وزنكِ قبل الحمل (كغم):",
+                btn_calc: "احسبي الزيادة الطبيعية",
+                gw_diaper_title: "👶 دليل مقاس الحفاضات والملابس",
+                gw_diaper_lbl: "أدخلي وزن الطفل الحالي (كغم):",
+                btn_calc_size: "اعرفي المقاس المناسب",
+                names_title: "📖 دليل أسماء الأطفال ومعانيها",
+                names_desc: "اكتشفي أجمل الأسماء العربية والكردية والمعاصرة:",
+                n1_title: "إيلين", n1_desc: "بريق الشمس أو أجمل النساء",
+                n2_title: "جيهان", n2_desc: "العالم والسيادة (اسم كردي)",
+                n3_title: "آران", n3_desc: "النشاط والسطوع",
+                n4_title: "سيلا", n4_desc: "الجمع واللم شمل الأحباء",
+                n5_title: "أرين", n5_desc: "النشاط والقوة (اسم كردي)",
+                n6_title: "ميرال", n6_desc: "أنثى الغزال الصغير",
+                relax_title: "🧘‍♀️ تمارين التنفس والتهدئة للأم",
+                relax_desc: "تمرين التنفس العميق يساعدكِ على تجديد طاقتكِ وتقليل القلق أثناء الحمل أو أثناء نوبات بكي الطفل:",
+                breath_start: "شهيق (استنشقي للداخل)... 4 ثواني",
+                btn_breath: "ابدأي جلسة التنفس لدقيقة واحدة",
+                lbl_baby_select: "اختاري عمر الطفل بالشهور:",
+                bag_title: "🧳 قائمة مستلزمات مستشفى الولادة",
+                bag_desc: "حددي الأغراض التي قمتِ بتجهيزها في حقيبتكِ:",
+                bag_i1: "ملابس قطنية مريحة للأم (2-3 طقم)",
+                bag_i2: "حفاضات أطفال ومبللة لحديثي الولادة",
+                bag_i3: "ملابس وأفارولات للطفل (3 أطقم)",
+                bag_i4: "بطانية ولفافة ناعمة للطفل",
+                bag_i5: "فوط صحية ومستلزمات العناية الشخصية",
+                bag_i6: "المستندات الطبية والهوية الشخصية",
+                m_title: "سوق Kinder للمستلزمات 🛍️",
+                m_desc: "أغراض أطفال مستعملة بحالة ممتازة بأسعار مناسبة",
+                p1_badge: "مستعمل - ممتاز", p1_title: "عربانة أطفال خفيفة للطي", p1_price: "25,000 د.ع",
+                p2_badge: "مستعمل - كالجديد", p2_title: "سرير خشبي للأطفال مع ملحقاته", p2_price: "45,000 د.ع",
+                btn_contact: "تواصل مع البائعة",
+                f_title: "أضيفي غرضكِ للبيع 📲",
+                f_desc: "شاركي مستلزمات طفلكِ النظيفة مع أمهات آخريات بسهولة",
+                lbl_item: "اسم المنتج:",
+                lbl_price: "السعر (بالدينار):",
+                lbl_phone: "رقم الواتساب للتواصل:",
+                btn_wa: "نشر الغرض عبر الواتساب",
+                footer_desc: "مجتمعكِ الآمن لرعاية الأم والطفل ومتابعة رحلة الحمل والنمو."
+            },
+            ku: {
+                hero_title: "بەخێربێن بۆ سەکۆی Kinder",
+                hero_desc: "شوێنی گشتگیری تۆ بۆ چاودێری دایک و منداڵ، دووگیانی، ژمێرەرەکان و کوتان...",
+                hero_btn: "ئامرازە ژیرەکان ببینە",
+                tip_header: "💡 ئامۆژگاری ئه‌مڕۆ بۆ دایک:",
+                tip_text: "خواردنەوەی ئاو بە بەردەوامی یارمەتیدەرە بۆ نوێبوونەوەی شلەی دەوروبەری کۆرپەلە و ماندوێتی کەمدەکاتەوە.",
+                tools_title: "ئامراز و تایبەتمەندییەکان 🛠️✨",
+                tools_desc: "هەموو ئەوەی پێویستتە لە یەک شوێندا بە دیزاینێکی سادە",
+                t_fetal: "گەشەی کۆرپەکەم",
+                t_period: "ژمێرەری سوڕی مانگانە",
+                t_due: "ژمێرەری کاتی لەدایکبوون",
+                t_vaccine: "ئاگادارکەرەوەی کوتان",
+                t_nutrition: "ڕێنمایی خۆراک",
+                t_growth: "گەشە، کێش و قەبارەکان",
+                t_names: "ڕێنمایی ناوی منداڵان",
+                t_relax: "ڕاهێنانی هەناسەدان",
+                t_baby: "گەشەی منداڵ مانگانە",
+                t_bag: "جانتای نەخۆشخانە",
+                lbl_preg_select: "مانگی دووگیانی هەڵبژێرە بۆ بڕی قەبارەی کۆرپەکەت:",
+                p_title: "🌸 ژمێرەری سوڕی مانگانە و پیتاندن",
+                p_lbl1: "بەرواری یەکەم ڕۆژی کۆتا سوڕی مانگانە بنووسە:",
+                p_lbl2: "ناوەڕاستی درێژی سوڕەکە (ئاسایی 28 ڕۆژ):",
+                p_lbl3: "نیشانەکان و باری دەروونی/جەستەیی ئێستا:",
+                btn_calc_p: "بەروارەکان بژمێرە و ڕۆژژمێر بنوێنە",
+                c_due_title: "🤰 ژمێرەری بەرواری لەدایکبوون",
+                btn_calc_due: "بەرواری لەدایکبوون بژمێرە",
+                c_baby_title: "👶 ژمێرەری تەمەنی منداڵ",
+                p_lbl4: "بەرواری لەدایکبوونی منداڵەکەت بنووسە:",
+                btn_calc_baby: "تەمەنی منداڵەکەت بژمێرە",
+                lbl_vac_select: "تەمەنی منداڵ هەڵبژێرە بۆ زانیاری کوتان:",
+                btn_remind: "⏰ چالاککردنی ئاگادارکەرەوەی کوتان",
+                nut_title: "🥦 ڕێنمایی خۆراکی تەندروست",
+                nut_preg_title: "🤰 خۆراکی ئافرەتی دووگیان:",
+                nut_preg_good: "✅ ڕێگەپێدراو: سەوزەی بڕگەدار، ماسی دەوڵەمەند بە ئۆمیگا ٣، میوەی تازە و ماست.",
+                nut_preg_bad: "❌ قەدەغەکراو: گوشتی خاو (سۆشی)، پەنیرە پاستۆریزەنەکراوەکان، کافاینی بەرز.",
+                nut_baby_title: "👶 دەستپێکردنی خۆراک بۆ منداڵ (لە ٦ مانگییەوە):",
+                nut_baby_m6: "• ٦-٧ مانگ: سەوزەی وردکراوی نەرم (کولەکە، گەزەر).",
+                nut_baby_m8: "• ٨-٩ مانگ: میوەی شێلراو (سێو، مۆز، ئەڤۆکادۆ) و زەردێنەی هێلکە.",
+                nut_baby_m10: "• ١٠-١٢ مانگ: پارچەی بچووکی کوڵاوی مریشک و برنج.",
+                gw_preg_title: "🤰 ژمێرەری کێشی دووگیانی",
+                gw_preg_lbl: "کێشت پێش دووگیانی بنووسە (کگم):",
+                btn_calc: "کێشی ئاسایی بژمێرە",
+                gw_diaper_title: "👶 ڕێنمایی قەبارەی پەڕۆ و جلوبەرگ",
+                gw_diaper_lbl: "کێشی ئێستای منداڵ بنووسە (کگم):",
+                btn_calc_size: "قەبارەی گونجاو بزانە",
+                names_title: "📖 ڕێنمایی ناوی منداڵان و واتاکانیان",
+                names_desc: "جوانترین ناوە کوردی و عەرەبییەکان بدۆزەرەوە:",
+                n1_title: "ئێلین", n1_desc: "تەقینی ڕووناکی یان جوانتری ژن",
+                n2_title: "جیهان", n2_desc: "گەردوون و جیهان (ناوی کوردی)",
+                n3_title: "ئاران", n3_desc: "چالاکی و درەوشانەوە",
+                n4_title: "سیلا", n4_desc: "کۆبوونەوە و گەیشتنەوە بە خۆشەویستان",
+                n5_title: "ئەرێن", n5_desc: "ھێز و چالاکی (ناوی کوردی)",
+                n6_title: "میرال", n6_desc: "بێچووە ئاسکی مێینە",
+                relax_title: "🧘‍♀️ ڕاهێنانی هەناسەدان بۆ دایک",
+                relax_desc: "هەناسەدانی قووڵ یارمەتیدەرە بۆ کەمکردنەوەی دڵەڕاوکێ لە کاتی دووگیانیدا:",
+                breath_start: "هەڵمژین (هەناسە ببرە ژوورەوە)... ٤ چرکە",
+                btn_breath: "دەستپێکردنی ڕاهێنان بۆ یەک خولەک",
+                lbl_baby_select: "تەمەنی منداڵ هەڵبژێرە بە مانگ:",
+                bag_title: "🧳 لیستی پێداویستییەکانی نەخۆشخانە",
+                bag_desc: "ئەو شتانە دیاری بکە کە ئامادەت کردوون:",
+                bag_i1: "جلی لۆکەیی ئاسوودە بۆ دایک (٢-٣ دەست)",
+                bag_i2: "پەڕۆ و سڕەری تەڕ بۆ ساوا",
+                bag_i3: "جلی مناڵ (٣ دەست)",
+                bag_i4: "پێچەر و بەتانی نەرم بۆ مناڵ",
+                bag_i5: "پێداویستییە تەندروستییەکانی دایک",
+                bag_i6: "بەڵگەنامە پزیشکییەکان و ناسنامە",
+                m_title: "بازاڕی Kinder بۆ پێداویستییەکان 🛍️",
+                m_desc: "کەلوپەلی بەکارهاتووی منداڵان بە نرخی گونجاو",
+                p1_badge: "بەکارهاتوو - بەرز", p1_title: "عەرەبانەی منداڵان", p1_price: "25,000 د.ع",
+                p2_badge: "بەکارهاتوو - وەک نوێ", p2_title: "تەختی دارینی منداڵان", p2_price: "45,000 د.ع",
+                btn_contact: "پەیوەندی بە فروشیاڕ بکە",
+                f_title: "کەلوپەلەکەت بۆ فروش بنووسە 📲",
+                f_desc: "پێداویستییە پاکەکانی منداڵەکەت ببهەشە لەگەڵ دایکانی تردا",
+                lbl_item: "ناوی بەرهەم:",
+                lbl_price: "نرخ (بە دینار):",
+                lbl_phone: "ژمارەی واتسئاپ:",
+                btn_wa: "بڵاوکردنەوە لە ڕێگەی واتسئاپ",
+                footer_desc: "کۆمەڵگەی ئارامی تۆ بۆ چاودێری دایک و منداڵ."
+            },
+            en: {
+                hero_title: "Welcome to Kinder Platform",
+                hero_desc: "Your all-in-one space for mother & child care, pregnancy tracking, tools...",
+                hero_btn: "Explore Smart Tools",
+                tip_header: "💡 Today's Mom Tip:",
+                tip_text: "Drinking water regularly helps replenish amniotic fluid and reduces daily fatigue.",
+                tools_title: "Tools & Features 🛠️✨",
+                tools_desc: "Everything you need in one place with a simple design",
+                t_fetal: "My Baby Growth",
+                t_period: "Period & Ovulation",
+                t_due: "Due Date Calculator",
+                t_vaccine: "Vaccine Reminder",
+                t_nutrition: "Nutrition Guide",
+                t_growth: "Growth & Weight",
+                t_names: "Baby Names Directory",
+                t_relax: "Breathing Exercises",
+                t_baby: "Baby Monthly Dev",
+                t_bag: "Hospital Bag",
+                lbl_preg_select: "Select pregnancy month to track baby size:",
+                p_title: "🌸 Period & Fertility Tracker",
+                p_lbl1: "Enter the first day of your last period:",
+                p_lbl2: "Average cycle length (usually 28 days):",
+                p_lbl3: "Current Symptoms & Mood:",
+                btn_calc_p: "Calculate & Show Calendar",
+                c_due_title: "🤰 Pregnancy Due Date Calculator",
+                btn_calc_due: "Calculate Due Date",
+                c_baby_title: "👶 Baby Age Calculator",
+                p_lbl4: "Enter baby's birth date:",
+                btn_calc_baby: "Calculate Age",
+                lbl_vac_select: "Select baby age for vaccine details:",
+                btn_remind: "⏰ Set Vaccine Reminder",
+                nut_title: "🥦 Healthy Nutrition & Feeding Guide",
+                nut_preg_title: "🤰 Pregnancy Diet (Dos & Don'ts):",
+                nut_preg_good: "✅ Recommended: Leafy greens, Omega-3 fish (well-cooked), fresh fruits, nuts, yogurt.",
+                nut_preg_bad: "❌ Avoid: Raw meats/fish (sushi), unpasteurized cheeses, high caffeine, processed junk food.",
+                nut_baby_title: "👶 Introducing Solid Foods (From 6 Months):",
+                nut_baby_m6: "• 6-7 Months: Smooth pureed vegetables (zucchini, carrots, sweet potato).",
+                nut_baby_m8: "• 8-9 Months: Lightly mashed fruits (apples, bananas) and hard-boiled egg yolk.",
+                nut_baby_m10: "• 10-12 Months: Soft small pieces of cooked chicken, rice, and veggies.",
+                gw_preg_title: "🤰 Pregnancy Weight Gain Calculator",
+                gw_preg_lbl: "Enter pre-pregnancy weight (kg):",
+                btn_calc: "Calculate Weight Gain",
+                gw_diaper_title: "👶 Diaper & Clothes Sizing Guide",
+                gw_diaper_lbl: "Enter baby's current weight (kg):",
+                btn_calc_size: "Find Right Size",
+                names_title: "📖 Baby Names Directory & Meanings",
+                names_desc: "Discover beautiful Arabic, Kurdish, and modern names:",
+                n1_title: "Eileen", n1_desc: "Sunlight or the most beautiful woman",
+                n2_title: "Jihan", n2_desc: "The universe and world (Kurdish origin)",
+                n3_title: "Aran", n3_desc: "Energy, vitality, and brightness",
+                n4_title: "Sila", n4_desc: "Reunion and coming together",
+                n5_title: "Arin", n5_desc: "Strength and active spirit (Kurdish origin)",
+                n6_title: "Miral", n6_desc: "Young female gazelle",
+                relax_title: "🧘‍♀️ Breathing & Relaxation for Mom",
+                relax_desc: "Deep breathing helps renew energy and calm anxiety during pregnancy or baby crying spells:",
+                breath_start: "Inhale deeply... 4 seconds",
+                btn_breath: "Start 1-Minute Breathing Session",
+                lbl_baby_select: "Select baby age in months:",
+                bag_title: "🧳 Maternity Hospital Bag Checklist",
+                bag_desc: "Check off items you have packed:",
+                bag_i1: "Comfortable cotton clothes for mom (2-3 sets)",
+                bag_i2: "Newborn diapers and wet wipes",
+                bag_i3: "Baby clothes & onesies (3 sets)",
+                bag_i4: "Soft baby blanket and swaddle",
+                bag_i5: "Maternity pads and personal care items",
+                bag_i6: "Medical documents and ID cards",
+                m_title: "Kinder Essentials Marketplace 🛍️",
+                m_desc: "Pre-loved baby items in excellent condition",
+                p1_badge: "Pre-loved - Excellent", p1_title: "Foldable Baby Stroller", p1_price: "25,000 IQD",
+                p2_badge: "Pre-loved - Like New", p2_title: "Wooden Baby Crib with Accessories", p2_price: "45,000 IQD",
+                btn_contact: "Contact Seller",
+                f_title: "List Your Item for Sale 📲",
+                f_desc: "Easily share clean baby items with other mothers",
+                lbl_item: "Product Name:",
+                lbl_price: "Price (IQD):",
+                lbl_phone: "WhatsApp Number:",
+                btn_wa: "Post via WhatsApp",
+                footer_desc: "Your safe community for mother and child care."
+            }
+        };
+
+        function switchLang(lang) {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'en') ? 'ltr' : 'rtl';
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (langData[lang] && langData[lang][key]) {
+                    el.textContent = langData[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+        }
+
+        const pregFruitData = {
+            "1": { fruit: "🌱 بذرة سمسم", size: "2 - 4 ملم", desc: "يبدأ تكون الأنبوب العصبي والقلب البدائي والدم.", quote: "💖 رحلتكِ العظيمة بدأت للتو! كل خلية تنمو الآن هي بداية لمعجزة جديدة.", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdtNGRzeXJybndyeXpxMnEyb2tzM250NnlmeHg1YnkzZmt0b3d6OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l378xP3JmY74Ua4cE/giphy.gif" },
+            "2": { fruit: "🍓 حبة كرز / عنب", size: "1.6 سم", desc: "تتشكل ملامح الوجه البسيطة وتنمو براعم الأطراف.", quote: "💖 قلب صغير ينبض في داخلكِ ليخبركِ أنه بخير!", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGJ0aTJlZW1idWZia3F5NmNmZXVpdjVnMndmNXd1bjh1OTkzbTJ0bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26tP21O5X4sLdM7hS/giphy.gif" },
+            "3": { fruit: "🍋 حبة ليمون", size: "5.4 سم", desc: "تكتمل أصابع اليدين والقدمين والأظافر.", quote: "💖 لقد تجاوزتِ المرحلة الأولى بنجاح! جسمكِ يصنع معجزة.", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h0Y3Q2YTBidXZydHBsNGtlcWFmY3ExNXc3a3AyaW5nZnZrdG1iZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyM/giphy.gif" },
+            "4": { fruit: "🥑 ثمرة أفوكادو", size: "11.6 سم", desc: "يتميز جنس الجنين بوضوح وتتشكل حواس التذوق.", quote: "💖 تشرق طاقة جديدة في رحلتكِ!", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1bnY5eXR5MmcyeThwYXVqZmIzeWRzZzdzbWVqOXRwMGJtbjhreSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSvA1L0iYVjDdm/giphy.gif" },
+            "5": { fruit: "🍌 حبة موز", size: "25 سم", desc: "يبدأ بسماع الأصوات الخارجية وتدب حركته الأولى.", quote: "💖 تلك الركلات الخفيفة هي أرق طريقة يقول لكِ بها: أنا هنا.", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnQ2OHJkMmhia3R3OGd5YjQ4Z3QzcGtqaGN0enJmcWhzbjRwdWZpNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT1XGz8TqV2H07A800/giphy.gif" },
+            "6": { fruit: "🌽 عرنوس ذرة", size: "30 سم", desc: "تتكون الرئتان بشكل أعمق وتفتح الأجفان.", quote: "💖 أنتِ المأوى والراحة والسطح الآمن لهذا الصغير.", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdW43MXc4NXZmZjVvNGNzeTZtd3M4cndsd2Y3bXRra3NycDRpd3d5biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKUJmI4z9pY6aUo/giphy.gif" },
+            "7": { fruit: "🥦 رأس بروكلي", size: "37.5 سم", desc: "يفتح عينيه ويغلقهما وتتراكم الدهون تحت الجلد.", quote: "💖 اقتربتِ كثيراً من خط النهاية! أنتِ أم رائعة.", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG9zbWoxbmEwZnMzeTExZWh3eHR1eHFscWN4M2k5a3dpaHZrbm05ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l378A8eS8q3d3ePja/giphy.gif" },
+            "8": { fruit: "🍍 حبة أناناس", size: "43 سم", desc: "يكتمل نمو الأجهزة الحيوية ويتخذ وضعية الولادة.", quote: "💖 الأيام القادمة تقربكِ من اللحظة الأجمل!", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDRyaG03OWs0MGdyd2kyeWF4OWg2ZmVycDRyYmsyZ2ZsdTNzbXhieCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT0xexA08O4EClhVsc/giphy.gif" },
+            "9": { fruit: "🍉 بطيخة صغيرة", size: "50 سم", desc: "يكتمل نمو الرئتين تماماً استعداداً للخروج للعالم.", quote: "💖 أنتِ على وشك خوض أجمل لحظة، ستنسين كل التعب لمجرد لمسه!", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWxicTFxOXJyeXZydmpyZ2Nxc3VnbGFzZncyZ2x2OGIydDRqOXM2dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKM8fV75x3D2dGg/giphy.gif" }
+        };
+
+        function openMainTab(tabId) {
+            document.querySelectorAll('.care-tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            var activeTab = document.getElementById(tabId);
+            activeTab.classList.add('active');
+            
+            setTimeout(() => {
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function toggleSymptom(element) {
+            element.classList.toggle('selected');
+            saveSymptoms();
+        }
+
+        function saveSymptoms() {
+            var selected = [];
+            document.querySelectorAll('.symptom-chip.selected').forEach(el => {
+                selected.push(el.getAttribute('data-symptom'));
+            });
+            localStorage.setItem('kinder_user_symptoms', JSON.stringify(selected));
+        }
+
+        function loadSavedSymptoms() {
+            var saved = localStorage.getItem('kinder_user_symptoms');
+            if(saved) {
+                var list = JSON.parse(saved);
+                document.querySelectorAll('.symptom-chip').forEach(el => {
+                    if(list.includes(el.getAttribute('data-symptom'))) {
+                        el.classList.add('selected');
+                    }
+                });
+            }
+        }
+
+        function showPregnancyFruitInfo() {
+            var val = document.getElementById('pregMonthSelect').value;
+            var item = pregFruitData[val];
+            var html = "<h2 style='color:#d81b60; margin-bottom:5px;'>حجم طفلكِ الآن بحجم: " + item.fruit + "</h2>" +
+                       "<div class='fetal-img-container'><img src='" + item.img + "' alt='تطور الجنين'></div>" +
+                       "<p style='font-weight:bold; color:#555;'>الطول/الحجم التقريبي: " + item.size + "</p>" +
+                       "<p style='color:#666; margin: 10px 0;'>" + item.desc + "</p>" +
+                       "<div style='background:#fff0f5; padding:12px; border-radius:10px; font-style:italic; color:#c2185b; margin-top:10px;'>" + item.quote + "</div>";
+            document.getElementById('fruitCardResult').innerHTML = html;
+        }
+
+        function calculatePeriodAndOvulation() {
+            var inputDate = document.getElementById('lastPeriodStartDate').value;
+            var cycle = parseInt(document.getElementById('cycleLength').value) || 28;
+            if(!inputDate) { alert("يرجى اختيار تاريخ بداية آخر دورة 🌸"); return; }
+            
+            var lmp = new Date(inputDate);
+            var nextPeriod = new Date(lmp);
+            nextPeriod.setDate(nextPeriod.getDate() + cycle);
+            
+            var ovulation = new Date(nextPeriod);
+            ovulation.setDate(ovulation.getDate() - 14);
+            
+            var fertStart = new Date(ovulation);
+            fertStart.setDate(fertStart.getDate() - 3);
+            var fertEnd = new Date(ovulation);
+            fertEnd.setDate(fertEnd.getDate() + 1);
+
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var res = document.getElementById('periodResult');
+            res.style.display = 'block';
+
+            res.innerHTML = "<div class='period-result-box'>" +
+                            "<div class='result-item'><strong>📅 موعد الدورة القادمة المتوقع:</strong> <span class='result-value'>" + nextPeriod.toLocaleDateString('ar-EG', options) + "</span></div>" +
+                            "<div class='result-item'><strong>🥚 يوم التبويض المتوقع:</strong> <span class='result-value'>" + ovulation.toLocaleDateString('ar-EG', options) + "</span></div>" +
+                            "<div class='result-item'><strong>🌌 نافذة الخصوبة العالية:</strong> <span class='result-value'>من " + fertStart.toLocaleDateString('ar-EG', options) + " إلى " + fertEnd.toLocaleDateString('ar-EG', options) + "</span></div>" +
+                            "</div>";
+
+            var saved = localStorage.getItem('kinder_user_symptoms');
+            var savedNote = document.getElementById('savedSymptomsNote');
+            if(saved && JSON.parse(saved).length > 0) {
+                savedNote.style.display = 'block';
+                savedNote.innerHTML = "📝 <b>تم حفظ سجل أعراضكِ الحالية:</b> " + JSON.parse(saved).join("، ");
+            } else {
+                savedNote.style.display = 'none';
+            }
+
+            renderCalendar(lmp, nextPeriod, ovulation, fertStart, fertEnd);
+        }
+
+        function renderCalendar(lmp, nextPeriod, ovulation, fertStart, fertEnd) {
+            var calArea = document.getElementById('calendarArea');
+            calArea.style.display = 'block';
+
+            var dayNames = ["أحد", "إثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
+            var html = "<div class='calendar-container'>" +
+                       "<div class='calendar-header'>🗓️ تقويم توقعات الشهر القادم</div>" +
+                       "<div class='calendar-grid'>";
+
+            for(var i=0; i<7; i++) {
+                html += "<div class='cal-day-name'>" + dayNames[i] + "</div>";
+            }
+
+            var curr = new Date(lmp);
+            curr.setDate(curr.getDate() - 2);
+
+            for(var d=0; d<28; d++) {
+                var dayClass = "cal-day";
+                var label = curr.getDate();
+
+                if(curr >= lmp && curr < new Date(lmp.getTime() + 4*24*60*60*1000)) {
+                    dayClass += " period";
+                } else if(curr.toDateString() === ovulation.toDateString()) {
+                    dayClass += " ovulation";
+                } else if(curr >= fertStart && curr <= fertEnd) {
+                    dayClass += " fertile";
+                }
+
+                html += "<div class='" + dayClass + "'>" + label + "</div>";
+                curr.setDate(curr.getDate() + 1);
+            }
+
+            html += "</div>" +
+                    "<div style='margin-top:12px; font-size:11px; display:flex; justify-content:space-around; text-align:center;'>" +
+                    "<span>🔴 أيام الدورة</span><span>🟣 يوم التبويض</span><span>🟢 خصوبة عالية</span>" +
+                    "</div></div>";
+
+            calArea.innerHTML = html;
+        }
+
+        function calculatePregnancy() {
+            var inputDate = document.getElementById('lastPeriodDate').value;
+            if (!inputDate) { alert("رجاءً اختاري تاريخاً 🌸"); return; }
+            var lmp = new Date(inputDate);
+            var dueDate = new Date(lmp);
+            dueDate.setDate(dueDate.getDate() + 280);
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('pregnancyResult').innerHTML = "✨ <b>موعد الولادة المتوقع:</b> <br><span style='color:#d81b60; font-size:18px; font-weight:bold;'>" + dueDate.toLocaleDateString('ar-EG', options) + "</span>";
+        }
+
+        function calculateBabyAge() {
+            var inputDate = document.getElementById('babyBirthDate').value;
+            if (!inputDate) { alert("رجاءً اختاري تاريخاً 🌸"); return; }
+            var birthDate = new Date(inputDate);
+            var today = new Date();
+            var years = today.getFullYear() - birthDate.getFullYear();
+            var months = today.getMonth() - birthDate.getMonth();
+            var days = today.getDate() - birthDate.getDate();
+            if (days < 0) { months--; days += 30; }
+            if (months < 0) { years--; months += 12; }
+            document.getElementById('babyAgeResult').innerHTML = "✨ <b>عمر الطفل:</b> <br><span style='color:#d81b60; font-size:18px; font-weight:bold;'>" + years + " سنة / " + months + " شهر / " + days + " يوم</span>";
+        }
+
+        function calcPregWeight() {
+            var w = parseFloat(document.getElementById('prePregWeight').value);
+            if(!w) { alert("أدخلي الوزن أولاً"); return; }
+            document.getElementById('pregWeightResult').innerHTML = "✨ <b>الزيادة الصحية الطبيعية:</b> بين 11.5 كغم و 16 كغم خلال الشهور التسعة.";
+        }
+
+        function calcDiaperSize() {
+            var w = parseFloat(document.getElementById('babyWeight').value);
+            if(!w) { alert("أدخلي الوزن أولاً"); return; }
+            var size = "مقاس 1 (حديث ولادة)";
+            if(w > 4 && w <= 8) size = "مقاس 2 (صغير)";
+            else if(w > 8 && w <= 11) size = "مقاس 3 (وسط)";
+            else if(w > 11) size = "مقاس 4 أو أكبر (كبير)";
+            document.getElementById('diaperResult').innerHTML = "✨ <b>المقاس المناسب لطفلكِ:</b> <span style='color:#d81b60; font-weight:bold;'>" + size + "</span>";
+        }
+
+        function startBreathing() {
+            var timer = document.getElementById('breathTimer');
+            var steps = ["شهيق (استنشقي للداخل)... 4s", "حبس النفس... 4s", "زفير (أخرجي الهواء)... 4s"];
+            var idx = 0;
+            var count = 0;
+            var interval = setInterval(() => {
+                timer.innerHTML = steps[idx];
+                idx = (idx + 1) % 3;
+                count++;
+                if(count > 12) {
+                    clearInterval(interval);
+                    timer.innerHTML = "✨ أحسنتِ! جلسة الاسترخاء اكتملت بنجاح.";
+                }
+            }, 3000);
+        }
+
+        function showVaccineInfo() {
+            var val = document.getElementById('vaccineAge').value;
+            var data = {
+                "birth": "<h3>📌 لقاحات حديث الولادة</h3><p>• البي سي جي (BCG) للسل.</p><p>• الجرعة الأولى للتهاب الكبد ب + شلل الأطفال الفموي.</p>",
+                "2m": "<h3>📌 لقاحات عمر شهرين</h3><p>• اللقاح السداسي (الجرعة الأولى).</p><p>• المكورات الرئوية والروتا.</p>",
+                "4m": "<h3>📌 لقاحات عمر 4 أشهر</h3><p>• الجرعة الثانية من اللقاح السداسي والمكورات الرئوية.</p>",
+                "6m": "<h3>📌 لقاحات عمر 6 أشهر</h3><p>• الجرعة الثالثة من اللقاح السداسي وقطرات شلل الأطفال.</p>",
+                "9m": "<h3>📌 لقاحات عمر 9 أشهر</h3><p>• الحصبة المفردة + فيتامين أ.</p>",
+                "12m": "<h3>📌 لقاحات عمر سنة</h3><p>• الثلاثي الفيروسي (MMR) والمكورات الرئوية.</p>",
+                "18m": "<h3>📌 لقاحات عمر 18 شهر</h3><p>• الجرعات المنشطة للثلاثي وشلل الأطفال و MMR.</p>"
+            };
+            document.getElementById('vaccineResult').innerHTML = data[val];
+        }
+
+        function setVaccineReminder() {
+            alert("⏰ تم تفعيل التذكير! سنقوم بتذكيركِ بموعد التطعيم القادم لطفلكِ.");
+        }
+
+        function showBabyDevInfo() {
+            var val = document.getElementById('babyDevMonth').value;
+            var data = {
+                "1": "<b>الشهر الأول:</b> التركيز على الأجسام القريبة (20-30 سم)، التفاعل مع الأصوات العالية، وتكرار ساعات النوم والرضاعة.",
+                "2": "<b>الشهر الثاني:</b> بداية الابتسامة الاجتماعية الأولى، تتبع الأجسام بالعينين، ورفع الرأس قليلاً عند الاستلقاء على البطن.",
+                "3": "<b>الشهر الثالث:</b> ثبات الرأس بشكل أفضل، فتح وإغلاق الكفين، والمناغاة بصوت خفيف مع الوالدين.",
+                "4": "<b>الشهر الرابع:</b> التقلب من البطن إلى الظهر، الضحك بصوت عالٍ، ومسك الألعاب الصغيرة بكف اليد.",
+                "6": "<b>الشهر السادس:</b> الجلوس بمساعدة خفيفة، بدء إدخال الأطعمة الصلبة والتذوق، ومحاولة نقل الأشياء بين اليدين.",
+                "9": "<b>الشهر التاسع:</b> الزحف بثبات، الوقوف مع الاستناد على الأثاث، فهم كلمة (لا)، وممارسة مسكة الإبهام والسبابة.",
+                "12": "<b>السنة الأولى (12 شهر):</b> أخذ الخطوات الأولى، النطق بكلمة إلى كلمتين واضحتين (بابا، ماما)، والمشاركة في الألعاب البسيطة."
+            };
+            document.getElementById('babyDevResult').innerHTML = "<h3>📌 تطورات الطفل:</h3><p>" + data[val] + "</p>";
+        }
+
+        function submitItem() {
+            var title = document.getElementById('title').value;
+            var price = document.getElementById('price').value;
+            var phone = document.getElementById('phone').value;
+            if (!title || !price || !phone) { alert("يرجى ملء جميع الحقول 🌸"); return; }
+            var myPhoneNumber = "9647000000000";
+            var message = "Kinder Platform Item:%0A" + encodeURIComponent(title) + "%0APrice: " + encodeURIComponent(price) + "%0APhone: " + encodeURIComponent(phone);
+            window.open("https://wa.me/" + myPhoneNumber + "?text=" + message, '_blank');
+        }
+
+        window.onload = function() {
+            showPregnancyFruitInfo();
+            showVaccineInfo();
+            showBabyDevInfo();
+            loadSavedSymptoms();
+        };
+    </script>
+</body>
+</html>
