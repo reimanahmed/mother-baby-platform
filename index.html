@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder | منصة الأم والطفل الشاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary-pink: #f7aef8;
+            --primary-dark: #d87093;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --border-color: #f8bbd0;
+            --button-style: #f48fb1;
+        }
+
+        /* خلفية وردي منقطة مستوحاة من Pinterest */
+        body {
+            background-color: #fff0f5;
+            background-image: radial-gradient(#111111 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #fff0f5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
+            margin: 0; padding: 0;
+        }
+
+        .top-banner {
+            background: linear-gradient(90deg, #f48fb1, #ce93d8);
+            color: white; padding: 6px 15px; font-size: 13px; font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .lang-select {
+            background: rgba(255, 255, 255, 0.2);
+            color: white; border: 1px solid white; border-radius: 12px;
+            padding: 3px 8px; font-size: 12px; font-family: 'Cairo', sans-serif; outline: none; cursor: pointer;
+        }
+        .lang-select option { color: #333; }
+
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(5px);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px; margin: 0 auto; padding: 10px 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;
+        }
+
+        .brand-logo { font-size: 28px; font-weight: 800; color: var(--primary-dark); text-decoration: none; }
+
+        .btn-button-style {
+            background-color: var(--button-style);
+            color: white; border: 2px solid #ffffff;
+            padding: 8px 18px; border-radius: 20px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1); transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-button-style:hover { transform: scale(1.03); background-color: var(--primary-dark); }
+
+        .main-nav {
+            display: flex; gap: 8px; justify-content: center; background: white; padding: 10px;
+            border-bottom: 1px solid var(--border-color); overflow-x: auto;
+        }
+
+        .nav-tab {
+            border: none; background: #fff0f5; color: var(--text-main); font-weight: 700; padding: 8px 16px;
+            border-radius: 15px; font-size: 13px; cursor: pointer; transition: 0.2s; white-space: nowrap;
+            font-family: 'Cairo', sans-serif; border: 1px solid var(--border-color);
+        }
+        .nav-tab.active, .nav-tab:hover { background: var(--primary-dark); color: white; border-color: var(--primary-dark); }
+
+        .container { max-width: 1000px; margin: 25px auto; padding: 0 15px; }
+
+        .tab-content {
+            display: none;
+            background: var(--card-bg); border-radius: 20px; padding: 25px;
+            border: 2px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: var(--primary-dark); font-size: 20px; font-weight: 800; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px; border-bottom: 2px dashed var(--border-color); padding-bottom: 10px;
+        }
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+        .tool-card {
+            background: #fff5f8; border: 1.5px solid var(--border-color); border-radius: 15px;
+            padding: 18px; text-align: center; transition: 0.2s;
+        }
+
+        .form-group { margin-bottom: 12px; text-align: right; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); outline: none; box-sizing: border-box;
+        }
+
+        .result-box {
+            background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 10px;
+            margin-top: 10px; font-weight: 700; font-size: 13px; display: none;
+        }
+
+        .sell-item-card { border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; background: white; }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط العلوي مع خيار تغيير اللغة -->
+    <div class="top-banner">
+        <span>🌸 مرحباً بكِ في منصة Kinder الشاملة للأم والطفل 🌸</span>
+        <div>
+            <i class="bi bi-translate"></i>
+            <select class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="ku">Kurdî (الكردية)</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="brand-logo" onclick="openTab('calculatorsTab')"><i class="bi bi-heart-fill"></i> Kinder</a>
+            
+            <div style="display:flex; gap:10px;">
+                <button class="btn-button-style" onclick="openTab('sellFormTab')">
+                    <i class="bi bi-plus-circle-fill"></i> أعرضي شيء للبيع
+                </button>
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <button class="nav-tab active" id="btn-calculatorsTab" onclick="openTab('calculatorsTab')">🧮 حاسبات المرأة والحمل</button>
+            <button class="nav-tab" id="btn-babyToolsTab" onclick="openTab('babyToolsTab')">👶 حاسبات وتطور الطفل</button>
+            <button class="nav-tab" id="btn-vaccinesTab" onclick="openTab('vaccinesTab')">💉 جدول اللقاحات</button>
+            <button class="nav-tab" id="btn-usedMarketTab" onclick="openTab('usedMarketTab')">♻️ سوق المستلزمات المستعملة</button>
+            <button class="nav-tab" id="btn-sellFormTab" onclick="openTab('sellFormTab')">➕ إضافة منتج للبيع</button>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. قسم حاسبات المرأة والحمل -->
+        <section id="calculatorsTab" class="tab-content active">
+            <div class="section-title"><i class="bi bi-calculator-fill"></i> حاسبات صحة المرأة والحمل والتبويض</div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h4 style="color:var(--primary-dark); margin-top:0;"><i class="bi bi-calendar-event"></i> حاسبة موعد الولادة</h4>
+                    <p style="font-size:11px; color:#666; margin:8px 0;">أدخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+                    <div class="form-group"><input type="date" id="lastPeriodDate"></div>
+                    <button class="btn-button-style" style="width:100%; justify-content:center;" onclick="calcPregnancy()">احسبي موعد الولادة</button>
+                    <div class="result-box" id="pregResult"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h4 style="color:var(--primary-dark); margin-top:0;"><i class="bi bi-flower1"></i> حاسبة التبويض والخصوبة</h4>
+                    <p style="font-size:11px; color:#666; margin:8px 0;">تحديد أيام الخصوبة العالية والتبويض المتوقع:</p>
+                    <div class="form-group"><input type="date" id="ovulationDate"></div>
+                    <button class="btn-button-style" style="width:100%; justify-content:center;" onclick="calcOvulation()">احسبي أيام التبويض</button>
+                    <div class="result-box" id="ovulationResult"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. قسم حاسبات وتطور الطفل -->
+        <section id="babyToolsTab" class="tab-content">
+            <div class="section-title"><i class="bi bi-emoji-smile-fill"></i> حاسبات عمر الطفل ومراحل التطور</div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h4 style="color:var(--primary-dark); margin-top:0;"><i class="bi bi-balloon-fill"></i> حاسبة عمر الطفل الدقيقة</h4>
+                    <div class="form-group">
+                        <label>تاريخ ميلاد الطفل:</label>
+                        <input type="date" id="babyBirthDate">
+                    </div>
+                    <button class="btn-button-style" style="width:100%; justify-content:center;" onclick="calcBabyAge()">احسبي عمر طفلكِ</button>
+                    <div class="result-box" id="babyAgeResult"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h4 style="color:var(--primary-dark); margin-top:0;"><i class="bi bi-graph-up-arrow"></i> متابعة تطورات الطفل</h4>
+                    <div class="form-group">
+                        <label>اختر عمر الطفل الحالي:</label>
+                        <select id="babyStageSelect" onchange="showBabyStage()">
+                            <option value="">-- اختر العمر --</option>
+                            <option value="1">من شهر إلى 3 أشهر (الابتسامة والتركيز)</option>
+                            <option value="2">من 4 إلى 6 أشهر (التقلب والجلوس بمساعدة)</option>
+                            <option value="3">من 7 إلى 9 أشهر (الحبو والجلوس بمفرده)</option>
+                            <option value="4">من 10 إلى 12 شهر (الوقوف والخطوات الأولى)</option>
+                        </select>
+                    </div>
+                    <div class="result-box" id="babyStageResult" style="text-align:right;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. قسم جدول اللقاحات -->
+        <section id="vaccinesTab" class="tab-content">
+            <div class="section-title"><i class="bi bi-shield-plus"></i> جدول اللقاحات الدورية المعتمدة للأطفال</div>
+            <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right;">
+                <thead>
+                    <tr style="background:#f8bbd0; color:white;">
+                        <th style="padding:10px; border-radius:0 8px 8px 0;">العمر المستهدف</th>
+                        <th style="padding:10px;">اسم اللقاح / التطعيم</th>
+                        <th style="padding:10px; border-radius:8px 0 0 8px;">الفائدة والحماية</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:10px;">عند الولادة مباشرة</td>
+                        <td>السل (BCG) + التهاب الكبد B</td>
+                        <td>حماية من السل الرئوي والتهاب الكبد الفيروسي</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:10px;">عمر شهرين</td>
+                        <td>اللقاح الخماسي + شلل الأطفال + الروتا</td>
+                        <td>الوقاية من الدفتيريا، الكزاز، السعال الديكي والروتا</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:10px;">عمر 4 أشهر</td>
+                        <td>الجرعة الثانية الخماسي + شلل الأطفال</td>
+                        <td>تعزيز المناعة ضد الأمراض الفيروسية الأساسية</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 4. قسم سوق المعروضات والسلع المستعملة -->
+        <section id="usedMarketTab" class="tab-content">
+            <div class="section-title"><i class="bi bi-tag-fill"></i> معروضات الأمهات للبيع (المستعمل والجديد)</div>
+            <div class="tools-grid" id="userItemsList">
+                <div class="sell-item-card">
+                    <span style="background:#e8f5e9; color:#2e7d32; padding:3px 8px; border-radius:10px; font-size:10px; font-weight:700;">مستعمل بحالة كالجديد</span>
+                    <h4 style="margin:8px 0; font-size:14px;">سرير أطفال هزاز خشبي مع المفرش</h4>
+                    <div style="font-weight:800; color:var(--primary-dark); font-size:15px;">40,000 د.ع</div>
+                    <p style="font-size:11px; color:#666; margin:5px 0;">التواصل واتساب: 07700000000 (بغداد - الكرادة)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. قسم إضافة منتج للبيع -->
+        <section id="sellFormTab" class="tab-content">
+            <div class="section-title"><i class="bi bi-shop"></i> إضفي منتجكِ المعروض للبيع</div>
+            <form onsubmit="postItemForSale(event)">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                    <div class="form-group">
+                        <label>اسم السلعة / المنتج</label>
+                        <input type="text" id="sellTitle" required placeholder="مثال: عربة أطفال مستعملة بحالة ممتازة">
+                    </div>
+                    <div class="form-group">
+                        <label>السعر المطلوب (دينار)</label>
+                        <input type="number" id="sellPrice" required placeholder="مثال: 35000">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                    <div class="form-group">
+                        <label>رقم هاتف التواصل / واتساب</label>
+                        <input type="tel" id="sellPhone" required placeholder="07XXXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>حالة المنتج</label>
+                        <select id="sellCondition">
+                            <option value="مستعمل بحالة كالجديد">مستعمل بحالة كالجديد</option>
+                            <option value="جديد غير مستخدم">جديد غير مستخدم</option>
+                            <option value="مستعمل بحالة جيدة">مستعمل بحالة جيدة</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>وصف المنتج والتفاصيل</label>
+                    <textarea id="sellDesc" rows="3" placeholder="اكتبي تفاصيل المنتج والمنطقة المكانية للتسليم..."></textarea>
+                </div>
+                <button type="submit" class="btn-button-style" style="width:100%; justify-content:center;">نشر السلعة في السوق الآن ✨</button>
+            </form>
+        </section>
+
+    </div>
+
+    <script>
+        // دالة تغيير لغة المنصة
+        function changeLanguage(lang) {
+            if(lang === 'ku') {
+                alert('تغییر كرن بۆ زمانێ كوردی...');
+                document.dir = 'rtl';
+            } else if(lang === 'en') {
+                alert('Switching to English...');
+                document.dir = 'ltr';
+            } else {
+                document.dir = 'rtl';
+            }
+        }
+
+        // دالة التنقل بين التبويبات
+        function openTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if(activeBtn) activeBtn.classList.add('active');
+        }
+
+        // دالة حساب موعد الولادة
+        function calcPregnancy() {
+            const dateVal = document.getElementById('lastPeriodDate').value;
+            if(!dateVal) return alert('الرجاء اختيار تاريخ أول يوم من آخر دورة!');
+            let date = new Date(dateVal);
+            date.setDate(date.getDate() + 280);
+            const res = document.getElementById('pregResult');
+            res.style.display = 'block';
+            res.innerHTML = `🐣 موعد الولادة المتوقع بفضل الله: <strong>${date.toISOString().split('T')[0]}</strong>`;
+        }
+
+        // دالة حساب فترة التبويض
+        function calcOvulation() {
+            const dateVal = document.getElementById('ovulationDate').value;
+            if(!dateVal) return alert('الرجاء تحديد تاريخ الدورة!');
+            let start = new Date(dateVal);
+            start.setDate(start.getDate() + 14);
+            const res = document.getElementById('ovulationResult');
+            res.style.display = 'block';
+            res.innerHTML = `🌸 أكثر أيام التبويض والخصوبة المتوقعة هي تقريباً: <strong>${start.toISOString().split('T')[0]}</strong>`;
+        }
+
+        // دالة حساب عمر الطفل
+        function calcBabyAge() {
+            const birthVal = document.getElementById('babyBirthDate').value;
+            if(!birthVal) return alert('الرجاء اختيار تاريخ ميلاد الطفل!');
+            const birth = new Date(birthVal);
+            const now = new Date();
+            const diffTime = Math.abs(now - birth);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const months = Math.floor(diffDays / 30);
+            const res = document.getElementById('babyAgeResult');
+            res.style.display = 'block';
+            res.innerHTML = `👶 عمر طفلكِ المبارك: <strong>${months} شهر</strong> (${diffDays} يوم)`;
+        }
+
+        // مراحل التطور
+        function showBabyStage() {
+            const val = document.getElementById('babyStageSelect').value;
+            const res = document.getElementById('babyStageResult');
+            res.style.display = 'block';
+            if(val === '1') res.innerHTML = '✨ يبدأ الطفل بالابتسام للوالدين، متابعة الأجسام المتحركة بعينيه، والاهتزاز باليدين.';
+            else if(val === '2') res.innerHTML = '✨ يستطيع التغلب على البطن، الضحك بصوت عالٍ، ومسك الألعاب البسيطة.';
+            else if(val === '3') res.innerHTML = '✨ الجلوس دون دعم، بداية الحبو (الزحف)، والتعرف على اسمه عند النداء.';
+            else if(val === '4') res.innerHTML = '✨ الوقوف مع المسك بالأثاث، نطق كلمات بسيطة مثل (ماما/بابا)، والخطوات الأولى.';
+            else res.style.display = 'none';
+        }
+
+        // نشر سلعة جديدة
+        function postItemForSale(e) {
+            e.preventDefault();
+            const title = document.getElementById('sellTitle').value;
+            const price = document.getElementById('sellPrice').value;
+            const phone = document.getElementById('sellPhone').value;
+            const condition = document.getElementById('sellCondition').value;
+            const desc = document.getElementById('sellDesc').value;
+
+            const list = document.getElementById('userItemsList');
+            const card = document.createElement('div');
+            card.className = 'sell-item-card';
+            card.innerHTML = `
+                <span style="background:#e8f5e9; color:#2e7d32; padding:3px 8px; border-radius:10px; font-size:10px; font-weight:700;">${condition}</span>
+                <h4 style="margin:8px 0; font-size:14px;">${title}</h4>
+                <div style="font-weight:800; color:var(--primary-dark); font-size:15px;">${parseInt(price).toLocaleString()} د.ع</div>
+                <p style="font-size:11px; color:#666; margin:5px 0;">${desc} <br> 📱 ${phone}</p>
+            `;
+            list.prepend(card);
+            alert('تم نشر سلعتكِ بنجاح!');
+            e.target.reset();
+            openTab('usedMarketTab');
+        }
+    </script>
+</body>
+</html>
