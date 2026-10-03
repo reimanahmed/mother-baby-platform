@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinder - منصة الأم والطفل المتكاملة</title>
+    <meta name="theme-color" content="#d81b60">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --primary-pink: #d81b60;
+            --border-color: #f0f0f0;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333333;
+        }
+
+        body {
+            padding-bottom: 75px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--primary-pink);
+        }
+
+        .lang-btn {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .lang-btn.active {
+            background: var(--primary-pink);
+            color: white;
+            border-color: var(--primary-pink);
+        }
+
+        .dark-mode .tool-card,
+        .dark-mode .calc-card,
+        .dark-mode .product-card,
+        .dark-mode .bottom-nav {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 25%;
+        }
+
+        .nav-item.active {
+            color: var(--primary-pink);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .tools-grid, .market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        .tool-card, .product-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .product-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 12px;
+            color: var(--primary-pink);
+            font-weight: bold;
+        }
+
+        .tool-icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #fff5f8;
+            border: 1px solid #f8bbd0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 30px;
+        }
+
+        .tool-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .app-screen { display: none; padding: 15px; }
+        .app-screen.active { display: block; }
+
+        .calc-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #f8bbd0;
+            margin: 15px auto;
+            max-width: 500px;
+        }
+
+        .input-field, .search-box {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .btn-main {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-sub {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Kinder 🌸</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button class="theme-btn" onclick="toggleDarkMode()">🌙</button>
+            <div class="lang-switcher">
+                <button id="btn-ar" onclick="switchLang('ar')" class="lang-btn active">AR</button>
+                <button id="btn-ku" onclick="switchLang('ku')" class="lang-btn">KU</button>
+                <button id="btn-en" onclick="switchLang('en')" class="lang-btn">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- شاشة الأدوات -->
+    <div id="screen-tools" class="app-screen active">
+        <div style="text-align:center; margin-bottom:15px;">
+            <h2 data-i18n="tools_title">الأدوات والميزات 🛠️✨</h2>
+            <p data-i18n="tools_sub">كل ما تحتاجينه في مكان واحد بتصميم بسيط وسهل</p>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-card" onclick="switchScreen('screen-preg')">
+                <div class="tool-icon-circle">🤰</div>
+                <div class="tool-title" data-i18n="tool_preg">تطورات جنيني</div>
+            </div>
+
+            <div class="tool-card" onclick="switchScreen('screen-period')">
+                <div class="tool-icon-circle">🪷</div>
+                <div class="tool-title" data-i18n="tool_period">الدورة والتبويض</div>
+            </div>
+
+            <div class="tool-card" onclick="switchScreen('screen-vaccine')">
+                <div class="tool-icon-circle">⏰</div>
+                <div class="tool-title" data-i18n="tool_vaccine">منبه اللقاحات</div>
+            </div>
+
+            <div class="tool-card" onclick="switchScreen('screen-bag')">
+                <div class="tool-icon-circle">🧳</div>
+                <div class="tool-title" data-i18n="tool_bag">حقيبة الولادة</div>
+            </div>
+
+            <div class="tool-card" onclick="switchScreen('screen-notes')">
+                <div class="tool-icon-circle">📝</div>
+                <div class="tool-title" data-i18n="tool_notes">ملاحظات الأم</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاسبة الحمل -->
+    <div id="screen-preg" class="app-screen">
+        <div class="calc-card">
+            <h3 data-i18n="preg_calc_title">🤰 حاسبة الحمل وتطور الجنين</h3>
+            <p data-i18n="preg_calc_sub" style="font-size:12px; color:#666; margin-bottom:15px;">ادخلي تاريخ أول يوم من آخر دورة شهرية:</p>
+            <input type="date" id="lastPeriodDate" class="input-field">
+            <button class="btn-main" onclick="calculatePregnancy()" data-i18n="calc_btn">حساب التطور</button>
+            
+            <div id="pregResult" style="margin-top:20px; display:none; text-align:start; background:#fff5f8; padding:15px; border-radius:12px;">
+                <p><strong data-i18n="preg_age">عمر الحمل الحالي:</strong> <span id="pregWeeks" style="color:#d81b60;"></span></p>
+                <p><strong data-i18n="fetal_size">حجم الجنين التقريبي:</strong> <span id="pregFruit"></span></p>
+                <p><strong data-i18n="due_date">موعد الولادة المتوقع:</strong> <span id="dueDate"></span></p>
+            </div>
+            <button class="btn-sub" onclick="switchScreen('screen-tools')" data-i18n="back_btn">رجوع للأدوات 🔙</button>
+        </div>
+    </div>
+
+    <!-- حاسبة التبويض -->
+    <div id="screen-period" class="app-screen">
+        <div class="calc-card">
+            <h3 data-i18n="period_title">🪷 حاسبة الدورة الشهرية والتبويض</h3>
+            <p data-i18n="period_sub" style="font-size:12px; color:#666; margin-bottom:15px;">تاريخ بداية آخر دورة:</p>
+            <input type="date" id="periodStartDate" class="input-field">
+            <button class="btn-main" onclick="calculateOvulation()" data-i18n="calc_btn">حساب المواعيد</button>
+
+            <div id="ovulationResult" style="margin-top:20px; display:none; text-align:start; background:#f3e5f5; padding:15px; border-radius:12px;">
+                <p><strong data-i18n="next_period">الدورة القادمة المتوقعة:</strong> <span id="nextPeriodDate" style="color:#8e24aa;"></span></p>
+                <p><strong data-i18n="ovulation_days">أيام التبويض المتوقعة:</strong> <span id="ovulationDays"></span></p>
+            </div>
+            <button class="btn-sub" onclick="switchScreen('screen-tools')" data-i18n="back_btn">رجوع للأدوات 🔙</button>
+        </div>
+    </div>
+
+    <!-- منبه اللقاحات -->
+    <div id="screen-vaccine" class="app-screen">
+        <div class="calc-card">
+            <h3 data-i18n="vaccine_title">⏰ جدول تطعيمات ولقاحات الطفل</h3>
+            <div style="text-align:start; line-height:2.2; margin-top:15px;">
+                <label><input type="checkbox"> <span data-i18n="v1">لقاح الولادة (السل B.C.G وشلل الأطفال)</span></label><br>
+                <label><input type="checkbox"> <span data-i18n="v2">لقاح شهرين (الخماسي وشلل الأطفال)</span></label><br>
+                <label><input type="checkbox"> <span data-i18n="v3">لقاح 4 أشهر (الجرعة الثانية)</span></label><br>
+                <label><input type="checkbox"> <span data-i18n="v4">لقاح 6 أشهر (الجرعة الثالثة)</span></label><br>
+            </div>
+            <button class="btn-sub" onclick="switchScreen('screen-tools')" data-i18n="back_btn">رجوع للأدوات 🔙</button>
+        </div>
+    </div>
+
+    <!-- حقيبة الولادة -->
+    <div id="screen-bag" class="app-screen">
+        <div class="calc-card">
+            <h3 data-i18n="bag_title">🧳 قائمة مستلزمات مستشفى الولادة</h3>
+            <div style="text-align:start; line-height: 2.2; margin-top:15px;">
+                <label><input type="checkbox"> <span data-i18n="b1">ملابس قطنية مريحة للأم (2-3 طقم)</span></label><br>
+                <label><input type="checkbox"> <span data-i18n="b2">حفاضات أطفال ومبللة لحديثي الولادة</span></label><br>
+                <label><input type="checkbox"> <span data-i18n="b3">ملابس وأفارولات للطفل (3 أطقم)</span></label><br>
+            </div>
+            <button class="btn-sub" onclick="switchScreen('screen-tools')" data-i18n="back_btn">رجوع للأدوات 🔙</button>
+        </div>
+    </div>
+
+    <!-- ملاحظات الأم -->
+    <div id="screen-notes" class="app-screen">
+        <div class="calc-card">
+            <h3 data-i18n="notes_title">📝 مذكرة الأم والأسئلة الخاصة</h3>
+            <textarea id="momNotesArea" style="width:100%; height:120px; padding:10px; border-radius:10px; border:1px solid #ccc; box-sizing:border-box; margin-top:10px;" placeholder="..."></textarea>
+            <button class="btn-main" onclick="saveMomNotes()" style="margin-top:10px;" data-i18n="save_btn">حفظ الملاحظة</button>
+            <p id="noteSavedStatus" style="font-size:12px; color:#4caf50; display:none; margin-top:5px;" data-i18n="saved_msg">تم الحفظ بنجاح! ✨</p>
+            <button class="btn-sub" onclick="switchScreen('screen-tools')" data-i18n="back_btn">رجوع للأدوات 🔙</button>
+        </div>
+    </div>
+
+    <!-- السوق -->
+    <div id="screen-market" class="app-screen">
+        <div style="text-align:center; margin-bottom:15px;">
+            <h2 data-i18n="market_title">سوق Kinder للمستلزمات 🛍️</h2>
+        </div>
+        <input type="text" id="marketSearch" class="search-box" placeholder="🔍 بحث..." onkeyup="filterMarketProducts()">
+        <div id="marketProductsList" class="market-grid"></div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-tools" onclick="switchScreen('screen-tools', this)">
+            <span class="nav-icon">🛠️</span>
+            <span data-i18n="nav_tools">الأدوات</span>
+        </div>
+        <div class="nav-item" id="nav-market" onclick="switchScreen('screen-market', this)">
+            <span class="nav-icon">🛍️</span>
+            <span data-i18n="nav_market">السوق</span>
+        </div>
+        <div class="nav-item" id="nav-bag" onclick="switchScreen('screen-bag', this)">
+            <span class="nav-icon">🧳</span>
+            <span data-i18n="nav_bag">الحقيبة</span>
+        </div>
+        <div class="nav-item" id="nav-notes" onclick="switchScreen('screen-notes', this)">
+            <span class="nav-icon">📝</span>
+            <span data-i18n="nav_notes">ملاحظاتي</span>
+        </div>
+    </div>
+
+    <script>
+        const productsData = [
+            { id: 'p1', icon: '🍼', price: '15,000 د.ع', nameKey: 'prod_bottle' },
+            { id: 'p2', icon: '🛏️', price: '85,000 د.ع', nameKey: 'prod_crib' },
+            { id: 'p3', icon: '🛒', price: '120,000 د.ع', nameKey: 'prod_stroller' },
+            { id: 'p4', icon: '🧸', price: '10,000 د.ع', nameKey: 'prod_toy' },
+            { id: 'p5', icon: '👕', price: '25,000 د.ع', nameKey: 'prod_clothes' },
+            { id: 'p6', icon: '🧼', price: '18,000 د.ع', nameKey: 'prod_care' }
+        ];
+
+        const i18nData = {
+            ar: {
+                tools_title: "الأدوات والميزات 🛠️✨",
+                tools_sub: "كل ما تحتاجينه في مكان واحد بتصميم بسيط وسهل",
+                tool_preg: "تطورات جنيني",
+                tool_period: "الدورة والتبويض",
+                tool_vaccine: "منبه اللقاحات",
+                tool_bag: "حقيبة الولادة",
+                tool_notes: "ملاحظات الأم",
+                nav_tools: "الأدوات",
+                nav_market: "السوق",
+                nav_bag: "الحقيبة",
+                nav_notes: "ملاحظاتي",
+                preg_calc_title: "🤰 حاسبة الحمل وتطور الجنين",
+                preg_calc_sub: "ادخلي تاريخ أول يوم من آخر دورة شهرية:",
+                calc_btn: "حساب",
+                preg_age: "عمر الحمل الحالي:",
+                fetal_size: "حجم الجنين التقريبي:",
+                due_date: "موعد الولادة المتوقع:",
+                back_btn: "رجوع للأدوات 🔙",
+                period_title: "🪷 حاسبة الدورة الشهرية والتبويض",
+                period_sub: "تاريخ بداية آخر دورة:",
+                next_period: "الدورة القادمة المتوقعة:",
+                ovulation_days: "أيام التبويض المتوقعة:",
+                vaccine_title: "⏰ جدول تطعيمات ولقاحات الطفل",
+                v1: "لقاح الولادة (السل B.C.G وشلل الأطفال)",
+                v2: "لقاح شهرين (الخماسي وشلل الأطفال)",
+                v3: "لقاح 4 أشهر (الجرعة الثانية)",
+                v4: "لقاح 6 أشهر (الجرعة الثالثة)",
+                bag_title: "🧳 قائمة مستلزمات مستشفى الولادة",
+                b1: "ملابس قطنية مريحة للأم (2-3 طقم)",
+                b2: "حفاضات أطفال ومبللة لحديثي الولادة",
+                b3: "ملابس وأفارولات للطفل (3 أطقم)",
+                notes_title: "📝 مذكرة الأم والأسئلة الخاصة",
+                save_btn: "حفظ الملاحظة",
+                saved_msg: "تم الحفظ بنجاح! ✨",
+                market_title: "سوق Kinder للمستلزمات 🛍️",
+                prod_bottle: "رضّاعة أطفال طبية",
+                prod_crib: "سرير أطفال خشبي",
+                prod_stroller: "عربة أطفال خفيفة",
+                prod_toy: "مجموعة ألعاب مهدئة",
+                prod_clothes: "طقم ملابس حديثي الولادة",
+                prod_care: "مجموعة العناية بالبشرة"
+            },
+            ku: {
+                tools_title: "ئامراز و تایبەتمەندییەکان 🛠️✨",
+                tools_sub: "هەموان لە یەک شوێندا بە دیزاینێکی ئاسان",
+                tool_preg: "گەشەی کۆرپەکەم",
+                tool_period: "خولی مانگانه و هێلکەدانان",
+                tool_vaccine: "بیرهێنەرەوەی کوتانەکان",
+                tool_bag: "جانتای منداڵبوون",
+                tool_notes: "تێبینییەکانی دایک",
+                nav_tools: "ئامرازەکان",
+                nav_market: "بازاڕ",
+                nav_bag: "جانتا",
+                nav_notes: "تێبینییەکانم",
+                preg_calc_title: "🤰 ژمێرەری دووگیانی و گەشەی کۆرپەلە",
+                preg_calc_sub: "بەرواری یەکەم ڕۆژی کۆتا خولی مانگانە بنووسە:",
+                calc_btn: "ئەژمارکردن",
+                preg_age: "تەمەنی ئێستای دووگیانی:",
+                fetal_size: "قەبارەی نزیکەیی کۆرپەلە:",
+                due_date: "بەرواری پێشبینیکراوی منداڵبوون:",
+                back_btn: "گەڕانەوە 🔙",
+                period_title: "🪷 ژمێرەری خولی مانگانە و هێلکەدانان",
+                period_sub: "بەرواری دەستپێکی کۆتا خول:",
+                next_period: "خولی مانگانەی داهاتوو:",
+                ovulation_days: "ڕۆژانی پێشبینیکراوی هێلکەدانان:",
+                vaccine_title: "⏰ خشتەی کوتانی منداڵ",
+                v1: "کوتانی لەدایکبوون (B.C.G و ئیفلیجی منداڵ)",
+                v2: "کوتانی ٢ مانگی",
+                v3: "کوتانی ٤ مانگی",
+                v4: "کوتانی ٦ مانگی",
+                bag_title: "🧳 لیستی پێداویستییەکانی نەخۆشخانە",
+                b1: "پۆشاکی لۆکەیی ئاسوودە بۆ دایک",
+                b2: "دایبی و پەڕۆی تەڕی منداڵ",
+                b3: "پۆشاکی منداڵ (٣ سێت)",
+                notes_title: "📝 تێبینییەکانی دایک",
+                save_btn: "پاشەکەوتکردن",
+                saved_msg: "بە سەرکەوتوویی پاشەکەوت کرا! ✨",
+                market_title: "بازاڕی Kinder 🛍️",
+                prod_bottle: "شیردانی پزیشکی منداڵان",
+                prod_crib: "تەختی تەختەیی منداڵ",
+                prod_stroller: "عەرەبانەی سووکی منداڵ",
+                prod_toy: "کۆمەڵە یاری ئارامکەرەوە",
+                prod_clothes: "سێتی جلوبەرگی ساوا",
+                prod_care: "کۆمەڵەی چاودێری پێست"
+            },
+            en: {
+                tools_title: "Tools & Features 🛠️✨",
+                tools_sub: "Everything you need in one simple place",
+                tool_preg: "My Baby's Growth",
+                tool_period: "Cycle & Ovulation",
+                tool_vaccine: "Vaccine Tracker",
+                tool_bag: "Hospital Bag",
+                tool_notes: "Mom's Notes",
+                nav_tools: "Tools",
+                nav_market: "Market",
+                nav_bag: "Bag",
+                nav_notes: "Notes",
+                preg_calc_title: "🤰 Pregnancy & Fetal Growth Calculator",
+                preg_calc_sub: "Enter the first day of your last period:",
+                calc_btn: "Calculate",
+                preg_age: "Current Gestational Age:",
+                fetal_size: "Approximate Fetal Size:",
+                due_date: "Estimated Due Date:",
+                back_btn: "Back to Tools 🔙",
+                period_title: "🪷 Cycle & Ovulation Calculator",
+                period_sub: "Start date of last period:",
+                next_period: "Expected Next Period:",
+                ovulation_days: "Expected Ovulation Days:",
+                vaccine_title: "⏰ Child Vaccination Schedule",
+                v1: "Birth Vaccines (BCG & Polio)",
+                v2: "2-Month Vaccines",
+                v3: "4-Month Vaccines",
+                v4: "6-Month Vaccines",
+                bag_title: "🧳 Hospital Bag Checklist",
+                b1: "Comfortable cotton clothes for mom (2-3 sets)",
+                b2: "Newborn diapers and wet wipes",
+                b3: "Baby outfits (3 sets)",
+                notes_title: "📝 Mom's Personal Notes",
+                save_btn: "Save Note",
+                saved_msg: "Saved successfully! ✨",
+                market_title: "Kinder Marketplace 🛍️",
+                prod_bottle: "Baby Feeding Bottle",
+                prod_crib: "Wooden Baby Crib",
+                prod_stroller: "Lightweight Baby Stroller",
+                prod_toy: "Soothing Toys Set",
+                prod_clothes: "Newborn Clothing Set",
+                prod_care: "Baby Skincare Kit"
+            }
+        };
+
+        let currentLang = 'ar';
+
+        function renderMarketProducts() {
+            const container = document.getElementById('marketProductsList');
+            if(!container) return;
+            container.innerHTML = '';
+            productsData.forEach(p => {
+                const title = i18nData[currentLang][p.nameKey] || p.nameKey;
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-icon">${p.icon}</div>
+                    <div class="product-title">${title}</div>
+                    <div class="product-price">${p.price}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterMarketProducts() {
+            const query = document.getElementById('marketSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            if(lang === 'ar' || lang === 'ku') {
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.documentElement.dir = 'ltr';
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(i18nData[lang] && i18nData[lang][key]) {
+                    el.textContent = i18nData[lang][key];
+                }
+            });
+
+            renderMarketProducts();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('kinder_dark_mode', document.body.classList.contains('dark-mode'));
+        }
+
+        if(localStorage.getItem('kinder_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        function switchScreen(screenId, navElement) {
+            document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId);
+            if(targetScreen) targetScreen.classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(navElement) {
+                navElement.classList.add('active');
+            } else {
+                if(screenId === 'screen-tools') document.getElementById('nav-tools').classList.add('active');
+                if(screenId === 'screen-market') document.getElementById('nav-market').classList.add('active');
+                if(screenId === 'screen-bag') document.getElementById('nav-bag').classList.add('active');
+                if(screenId === 'screen-notes') document.getElementById('nav-notes').classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function calculatePregnancy() {
+            const dateVal = document.getElementById('lastPeriodDate').value;
+            if(!dateVal) return alert('يرجى اختيار التاريخ أولاً / تکایە بەروار هەڵبژێرە');
+
+            const lastDate = new Date(dateVal);
+            const today = new Date();
+            const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+            const weeks = Math.floor(diffDays / 7);
+
+            const dueDate = new Date(lastDate);
+            dueDate.setDate(dueDate.getDate() + 280);
+
+            const fruits = ["حبة سمسم 🫘", "حبة تفاح 🍎", "حبة ليمون 🍋", "حبة رمان 🫐", "حبة بطيخ 🍉"];
+            const fruitName = fruits[Math.min(Math.floor(weeks / 8), fruits.length - 1)] || "حبة سمسم 🫘";
+
+            document.getElementById('pregWeeks').textContent = weeks + " أسبوع / هەفتە";
+            document.getElementById('pregFruit').textContent = fruitName;
+            document.getElementById('dueDate').textContent = dueDate.toISOString().split('T')[0];
+            document.getElementById('pregResult').style.display = 'block';
+        }
+
+        function calculateOvulation() {
+            const dateVal = document.getElementById('periodStartDate').value;
+            if(!dateVal) return alert('يرجى اختيار التاريخ أولاً / تکایە بەروار هەڵبژێرە');
+
+            const lastDate = new Date(dateVal);
+            const nextPeriod = new Date(lastDate);
+            nextPeriod.setDate(nextPeriod.getDate() + 28);
+
+            const ovulationDate = new Date(lastDate);
+            ovulationDate.setDate(ovulationDate.getDate() + 14);
+
+            document.getElementById('nextPeriodDate').textContent = nextPeriod.toISOString().split('T')[0];
+            document.getElementById('ovulationDays').textContent = ovulationDate.toISOString().split('T')[0];
+            document.getElementById('ovulationResult').style.display = 'block';
+        }
+
+        function saveMomNotes() {
+            const text = document.getElementById('momNotesArea').value;
+            localStorage.setItem('kinder_mom_notes', text);
+            const status = document.getElementById('noteSavedStatus');
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 2000);
+        }
+
+        window.onload = function() {
+            const savedNotes = localStorage.getItem('kinder_mom_notes');
+            if(savedNotes) document.getElementById('momNotesArea').value = savedNotes;
+            renderMarketProducts();
+        };
+    </script>
+</body>
+</html>
