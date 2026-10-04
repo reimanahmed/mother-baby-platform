@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملزمة الإنكليزي التفاعلية - الرابع إعدادي</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        h1 { color: var(--primary); margin: 0 0 10px 0; }
+        .badge { background: var(--accent); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.9em; }
+
+        .section { margin-bottom: 30px; }
+        h2 { color: var(--accent); border-right: 4px solid var(--accent); padding-right: 10px; }
+
+        /* Vocabulary Cards */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .vocab-card {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .vocab-card:hover { transform: translateY(-3px); background: #e2e8f0; }
+        .vocab-word { font-weight: bold; font-size: 1.1em; color: var(--primary); }
+        .vocab-meaning { display: none; color: #4a5568; margin-top: 5px; }
+
+        /* Grammar Box */
+        .grammar-box {
+            background: #eef6fc;
+            border-right: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 4px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Quiz Section */
+        .quiz-item {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            direction: ltr;
+            text-align: left;
+        }
+
+        button.btn-submit {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button.btn-submit:hover { background: #2980b9; }
+        .result-box { margin-top: 15px; font-weight: bold; text-align: center; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">المنهج العراقي - الرابع الاعدادي</span>
+        <h1>Unit 1: Lesson 1 - Learning Languages</h1>
+    </header>
+
+    <!-- Vocab Section -->
+    <div class="section">
+        <h2>1. Key Vocabulary (المفردات الرئيسية)</h2>
+        <p>اضغط على الكلمة لإظهار المعنى:</p>
+        <div class="vocab-grid">
+            <div class="vocab-card" onclick="toggleVocab(this)">
+                <div class="vocab-word">Interpreter</div>
+                <div class="vocab-meaning">مترجم شفهي</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocab(this)">
+                <div class="vocab-word">Self-access centre</div>
+                <div class="vocab-meaning">مركز التعلم الذاتي</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocab(this)">
+                <div class="vocab-word">Learning diary</div>
+                <div class="vocab-meaning">مذكرة التعلم</div>
+            </div>
+            <div class="vocab-card" onclick="toggleVocab(this)">
+                <div class="vocab-word">Flashcards</div>
+                <div class="vocab-meaning">بطاقات تعليمية</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grammar Section -->
+    <div class="section">
+        <h2>2. Grammar: Present Simple vs Present Continuous</h2>
+        <div class="grammar-box">
+            <p><strong>Present Simple (المضارع البسيط):</strong> Used for routines and permanent facts.</p>
+            <p><em>Example:</em> She <b>speaks</b> three languages.</p>
+            <hr>
+            <p><strong>Present Continuous (المضارع المستمر):</strong> Used for actions happening now or temporary situations.</p>
+            <p><em>Example:</em> I <b>am studying</b> English at the moment.</p>
+        </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="section">
+        <h2>3. Interactive Quiz (اختبر نفسك)</h2>
+        <form id="quizForm">
+            <div class="quiz-item">
+                <p>1. Look! He ________ (study) in the self-access centre right now.</p>
+                <label class="quiz-option"><input type="radio" name="q1" value="a"> studies</label>
+                <label class="quiz-option"><input type="radio" name="q1" value="b"> is studying</label>
+                <label class="quiz-option"><input type="radio" name="q1" value="c"> studied</label>
+            </div>
+
+            <div class="quiz-item">
+                <p>2. An interpreter ________ (translate) spoken words simultaneously.</p>
+                <label class="quiz-option"><input type="radio" name="q2" value="a"> translates</label>
+                <label class="quiz-option"><input type="radio" name="q2" value="b"> is translating</label>
+                <label class="quiz-option"><input type="radio" name="q2" value="c"> translate</label>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="checkQuiz()">تحقق من الإجابات</button>
+        </form>
+        <div id="result" class="result-box"></div>
+    </div>
+</div>
+
+<script>
+    function toggleVocab(card) {
+        const meaning = card.querySelector('.vocab-meaning');
+        meaning.style.display = meaning.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function checkQuiz() {
+        const answers = { q1: 'b', q2: 'a' };
+        let score = 0;
+        const form = document.forms['quizForm'];
+        
+        if (form['q1'].value === answers.q1) score++;
+        if (form['q2'].value === answers.q2) score++;
+
+        const resultDiv = document.getElementById('result');
+        if (score === 2) {
+            resultDiv.style.color = 'var(--success)';
+            resultDiv.innerHTML = 'ممتاز! جميع إجاباتك صحيحة (2/2) 🎉';
+        } else {
+            resultDiv.style.color = 'var(--danger)';
+            resultDiv.innerHTML = `حصلت على ${score} من 2. حاول مرة أخرى! 💡`;
+        }
+    }
+</script>
+
+</body>
+</html>
